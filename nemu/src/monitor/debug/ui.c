@@ -87,7 +87,7 @@ static int cmd_x(char *args) {
     int tmp;
 	sscanf(arg2,"%x",&tmp);
 	vaddr = (uint32_t)tmp;
-	printf("arg2:%s n:%d vaddr:%8x\n",arg2,n,vaddr);
+	printf("arg2:%s n:%d vaddr:%u\n",arg2,n,vaddr);
 
 	uint32_t instr = vaddr_read(vaddr,n);
 	printf("0x%8x",instr);	
