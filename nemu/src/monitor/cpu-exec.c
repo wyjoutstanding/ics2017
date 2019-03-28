@@ -6,7 +6,7 @@
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
-#define MAX_INSTR_TO_PRINT 10
+#define MAX_INSTR_TO_PRINT 16//打印步数<16
 
 int nemu_state = NEMU_STOP;
 
@@ -15,6 +15,7 @@ void exec_wrapper(bool);
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
   if (nemu_state == NEMU_END) {
+
     printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
     return;
   }
@@ -22,8 +23,10 @@ void cpu_exec(uint64_t n) {
 
   bool print_flag = n < MAX_INSTR_TO_PRINT;
 
-  for (; n > 0; n --) {
-    /* Execute one instruction, including instruction fetch,
+  for 
+	  (; n > 0; n --) {
+    /*
+	 * Execute one instruction, including instruction fetch,
      * instruction decode, and the actual execution. */
     exec_wrapper(print_flag);
 
