@@ -52,7 +52,7 @@ static int cmd_si(char *args){
 //cmd_info,查看信息
 static int cmd_info(char *args) {
       char *arg = strtok(NULL," ");
-        if(strcmp(arg,"r") == 0){//打印所有寄存器
+       if(strcmp(arg,"r") == 0){//打印所有寄存器
 //		cpu.gpr[0]._32 = 20;
 
 			for(int i = 0; i < 8; i++) {
@@ -89,7 +89,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute in step", cmd_si},
-  { "info","r --show all of registers infomation \n w --others",cmd_info}, 
+  { "info","r --show all of registers infomation \n    w --others",cmd_info}, 
   /* TODO: Add more commands */
 
 };
