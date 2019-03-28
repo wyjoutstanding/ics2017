@@ -56,15 +56,15 @@ static int cmd_info(char *args) {
 //		cpu.gpr[0]._32 = 20;
 
 			for(int i = 0; i < 8; i++) {
-   				  printf("%s\t%8x\t%u\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);	       
+  				  printf("%s\t0x%08x\t%u\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);	       
 		  	 }
 
 			for(int i = 0; i < 8; i++) {
-				 printf("%s\t%4x\t%u\n",regsw[i],cpu.gpr[i]._16,cpu.gpr[i]._16);
+				 printf("%s\t0x%04x\t%u\n",regsw[i],cpu.gpr[i]._16,cpu.gpr[i]._16);
 			 }
 
 			for(int i = 0; i < 8; i++) {
-				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i%4]._8[i/4],cpu.gpr[i%4]._8[i/4]);
+				 printf("%s\t0x%02x\t%u\n",regsb[i],cpu.gpr[i%4]._8[i/4],cpu.gpr[i%4]._8[i/4]);
 
 			}
 	 	}
