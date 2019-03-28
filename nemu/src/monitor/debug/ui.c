@@ -89,7 +89,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute in step", cmd_si},
-  { "info","r --show all of registers infomation \n    w --others",cmd_info}, 
+  { "info","r --show all of registers infomation \n     - w --others",cmd_info}, 
   /* TODO: Add more commands */
 
 };
