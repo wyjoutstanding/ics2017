@@ -39,7 +39,7 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 //cmd_si
 static int cmd_si(char *args){
-	printf("%s\n",args);
+//	printf("%s\n",args);
 	    char *arg = strtok(NULL," ");
 	    int n = 1,t = 1;
 		    if(arg != NULL){
