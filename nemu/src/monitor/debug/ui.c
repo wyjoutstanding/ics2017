@@ -80,20 +80,21 @@ static int cmd_info(char *args) {
 
 //cmd_x扫描内存
 static int cmd_x(char *args) {
-	char *arg1 = strtok(NULL," ");
-	char *arg2 = strtok(NULL," ");
-	int n = atoi(arg1);
+	char *arg1 = strtok(NULL," ");//内存长度len
+	char *arg2 = strtok(NULL," ");//起始地址vaddr
+	int len = atoi(arg1);
+
 	uint32_t vaddr;
-	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数
-//	printf("arg2:%s n:%d vaddr:%u\n",arg2,n,vaddr);
+	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数,表示地址
+	printf("Address        Dword block   Byte sequence");
 	
-	uint32_t instr;
-	for(int i = 0; i < n; i++) {
-		instr =  vaddr_read(vaddr+i*n,n);
-		printf("0x%08x    0x%08x    0x",vaddr+i*n,instr);
+	uint32_t instr;//存放地址vaddr中的内容
+	for(int i = 0; i < len; i++) {
+		instr =  vaddr_read(vaddr+i*len,len);//从内存中读取内容,即指令
+		printf("0x%08x    0x%08x    0x",vaddr+i*len,instr);
+		//小端顺序输出
 		uint8_t *p_instr = (uint8_t*)&instr;
-		
-		for(int j = 0; j < n; j++) {
+		for(int j = 0; j < len; j++) {
 			printf("%02x",*(p_instr + j));
 		}
 		printf("\n");
