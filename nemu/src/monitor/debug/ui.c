@@ -63,13 +63,10 @@ static int cmd_info(char *args) {
 				 printf("%s\t%4x\t%u\n",regsw[i],cpu.gpr[i]._16,cpu.gpr[i]._16);
 			 }
 
-			for(int i = 0; i < 4; i++) {
-				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i]._8[0],cpu.gpr[i]._8[0]);
-			 }
-			 for(int i = 0; i < 4; i++) {
-				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i]._8[1],cpu.gpr[i]._8[1]);
-			 }	
+			for(int i = 0; i < 8; i++) {
+				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i]._8[i/4],cpu.gpr[i]._8[i/4]);
 
+			}
 	 	}
 		else if(strcmp(arg,"w") == 0) {
 
