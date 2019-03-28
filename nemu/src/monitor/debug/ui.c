@@ -64,7 +64,7 @@ static int cmd_info(char *args) {
 			 }
 
 			for(int i = 0; i < 8; i++) {
-				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i]._8[i/4],cpu.gpr[i]._8[i/4]);
+				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i%4]._8[i/4],cpu.gpr[i%4]._8[i/4]);
 
 			}
 	 	}
