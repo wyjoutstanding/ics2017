@@ -42,7 +42,8 @@ static int cmd_si(char *args){
 //	printf("%s\n",args);
 	    char *arg = strtok(NULL," ");
 	    int n = 1,t = 1;
-		    if(arg != NULL){
+		    
+		if(arg != NULL){
 			    t = atoi(arg);
 				 n = t;
 			}
@@ -77,8 +78,18 @@ static int cmd_info(char *args) {
 		return 0;
 }
 
+//cmd_x扫描内存
+static int cmd_x(char *args) {
+	char *arg1 = strtok(NULL," ");
+	char *arg2 = strtok(NULL," ");
+	int n = atoi(arg1);
+	uint32_t vaddr = (uint32_t)atoi(arg2);
+	printf("n:%d vaddr:%u",n,vaddr);
 
-
+	uint32_t instr = vaddr_read(vaddr,n);
+	printf("0x%8x",instr);	
+	return 0;
+}
 //指令结构体：名称，描述，函数名
 static struct {
   char *name;
@@ -90,6 +101,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute in step", cmd_si},
   { "info","r --show all of registers infomation \n     - w --others",cmd_info}, 
+  { "x","scan memory",cmd_x},
   /* TODO: Add more commands */
 
 };
