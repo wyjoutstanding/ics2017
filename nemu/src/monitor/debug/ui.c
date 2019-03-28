@@ -90,15 +90,14 @@ static int cmd_x(char *args) {
 	uint32_t instr;
 	for(int i = 0; i < n; i++) {
 		instr =  vaddr_read(vaddr+i*n,n);
-		printf("0x%08x    0x%08x    0x",vaddr,instr);
+		printf("0x%08x    0x%08x    0x",vaddr+i*n,instr);
 		uint8_t *p_instr = (uint8_t*)&instr;
+		
 		for(int j = 0; j < n; j++) {
 			printf("%02x",*(p_instr + j));
-
 		}
 		printf("\n");
 	}	
-	
 	return 0;
 }
 //指令结构体：名称，描述，函数名
