@@ -49,6 +49,24 @@ static int cmd_si(char *args){
 			  cpu_exec(n);
   return 0;
 }
+//cmd_info,查看信息
+static int cmd_info(char *args) {
+      char *arg = strtok(NULL," ");
+        if(strcmp(arg,"r") == 0){//打印所有寄存器
+	          for(int i = 0; i < 8; i++) {
+               printf("%s\t%8x\t%d\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);	          }
+		}
+		else if(strcmp(arg,"w") == 0) {
+
+		}
+		else {
+		    cmd_help("info");
+		}
+		return 0;
+}
+
+
+
 //指令结构体：名称，描述，函数名
 static struct {
   char *name;
@@ -58,7 +76,8 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  {"si", "Execute in step", cmd_si}, 
+  { "si", "Execute in step", cmd_si},
+  { "info","r --show all of registers infomation \n w --others",cmd_info}, 
   /* TODO: Add more commands */
 
 };
