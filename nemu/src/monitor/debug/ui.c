@@ -84,13 +84,15 @@ static int cmd_x(char *args) {
 	char *arg2 = strtok(NULL," ");
 	int n = atoi(arg1);
 	uint32_t vaddr;
-//    int tmp;
-	sscanf(arg2,"%x",&vaddr);
-//	vaddr = (uint32_t)tmp;
+	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数
 	printf("arg2:%s n:%d vaddr:%u\n",arg2,n,vaddr);
-
-	uint32_t instr = vaddr_read(vaddr,n);
-	printf("0x%08x",instr);	
+	
+	uint32_t instr;
+	for(int i = 0; i < n; i++) {
+		instr =  vaddr_read(vaddr+n,n);
+		printf("0x%08x",instr);
+	}	
+	
 	return 0;
 }
 //指令结构体：名称，描述，函数名
