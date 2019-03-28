@@ -53,12 +53,24 @@ static int cmd_si(char *args){
 static int cmd_info(char *args) {
       char *arg = strtok(NULL," ");
         if(strcmp(arg,"r") == 0){//打印所有寄存器
-		cpu.gpr[0]._32 = 20;
-	          for(int i = 0; i < 8; i++) {
+//		cpu.gpr[0]._32 = 20;
 
-   				  printf("%s\t%8x\t%u\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);	          }
+			for(int i = 0; i < 8; i++) {
+   				  printf("%s\t%8x\t%u\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);	       
+		  	 }
 
-		}
+			for(int i = 0; i < 8; i++) {
+				 printf("%s\t%4x\t%u\n",regsw[i],cpu.gpr[i]._16,cpu.gpr[i]._16);
+			 }
+
+			for(int i = 0; i < 4; i++) {
+				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i]._8[0],cpu.gpr[i]._8[0]);
+			 }
+			 for(int i = 0; i < 4; i++) {
+				 printf("%s\t%2x\t%u\n",regsb[i],cpu.gpr[i]._8[1],cpu.gpr[i]._8[1]);
+			 }	
+
+	 	}
 		else if(strcmp(arg,"w") == 0) {
 
 		}
