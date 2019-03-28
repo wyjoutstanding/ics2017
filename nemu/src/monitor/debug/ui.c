@@ -86,7 +86,7 @@ static int cmd_x(char *args) {
 
 	uint32_t vaddr;
 	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数,表示地址
-	printf("Address        Dword block   Byte sequence");
+	printf("Address       Dword block  Byte sequence\n");
 	
 	uint32_t instr;//存放地址vaddr中的内容
 	for(int i = 0; i < len; i++) {
