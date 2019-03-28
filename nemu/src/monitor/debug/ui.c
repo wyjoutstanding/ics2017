@@ -91,7 +91,7 @@ static int cmd_x(char *args) {
 	uint32_t instr;//存放地址vaddr中的内容
 	for(int i = 0; i < len; i++) {
 		instr =  vaddr_read(vaddr+i*len,len);//从内存中读取内容,即指令
-		printf("0x%08x    0x%08x    0x",vaddr+i*len,instr);
+		printf("0x%08x    0x%08x    ",vaddr+i*len,instr);
 		//小端顺序输出
 		uint8_t *p_instr = (uint8_t*)&instr;
 		for(int j = 0; j < len; j++) {
