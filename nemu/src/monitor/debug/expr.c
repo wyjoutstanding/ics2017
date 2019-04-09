@@ -82,7 +82,7 @@ static bool make_token(char *e) {
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
-    Log("e_pos:%c\n",e[position]);
+//    Log("e_pos:%c\n",e[position]);
 		for (i = 0; i < NR_REGEX; i ++) {
      if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
@@ -128,9 +128,9 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  Log("to do before\n");
+//  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
-  Log("to do after\n");
+//  Log("to do after\n");
   return 0;
 }
