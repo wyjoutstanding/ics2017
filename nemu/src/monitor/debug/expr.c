@@ -31,9 +31,9 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
 
-	{"^0x[0-9A-F]{1,8}$", TK_HEX},//hexadecimal
+	{"0x[0-9A-F]{1,8}", TK_HEX},//hexadecimal
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)", TK_REG},//reg
-  {"^0$|^([1-9][0-9]*)$",TK_DEC},//decimal
+  {"0|([1-9][0-9]*)",TK_DEC},//decimal，考虑到'('可以紧贴，所以将^,$暂时去除
 
 	{"-", '-'},						// sub
 	{"\\*", '*'},					// mul
