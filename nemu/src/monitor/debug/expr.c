@@ -10,7 +10,8 @@ enum {
   TK_NOTYPE = 256,//space
  	TK_EQ = 255,//==
 	TK_HEX = 254,//16进制
-	TK_REG = 253,//$eax...
+	TK_DEC = 253,//10进制
+	TK_REG = 252,//$eax...
 
   /* TODO: Add more token types */
 
@@ -29,15 +30,15 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
 
-	{"\\^0x[0-9A-F]{1,8}$", TK_HEX},//hex
+	{"^0x[0-9A-F]{1,8}$", TK_HEX},//hex
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)", TK_REG},//reg
 
 	{"-", '-'},						// sub
 	{"\\*", '*'},					// mul
 	{"/", '/'},						// div
   
-	{"\\(", '('},
-	{"\\)", ')'}
+	{"\\(", '('},					//brakets is special in regex !!!
+	{"\\)", ')'},
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
