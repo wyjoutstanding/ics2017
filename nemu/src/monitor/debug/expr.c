@@ -92,7 +92,7 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 				//取子串
-				char* substr = NULL;
+				char* substr = (char*)malloc(32);
 				strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
 				if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
