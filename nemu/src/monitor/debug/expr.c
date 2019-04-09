@@ -29,7 +29,7 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
 
-	{"^0x[0-9A-F]{1,8}$", TK_HEX},//hex
+	{"\\^0x[0-9A-F]{1,8}$", TK_HEX},//hex
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)", TK_REG},//reg
 
 	{"-", '-'},						// sub
