@@ -110,7 +110,8 @@ static bool make_token(char *e) {
 					default:tokens[nr_token++].type = rules[i].token_type;break;
 				}
         break;
-      }
+
+		 }
     }
 
     if (i == NR_REGEX) {
@@ -127,9 +128,9 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
+  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
-
+  Log("to do after\n");
   return 0;
 }
