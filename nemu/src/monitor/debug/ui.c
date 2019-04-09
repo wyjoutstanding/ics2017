@@ -102,10 +102,10 @@ static int cmd_x(char *args) {
 	return 0;
 }
 static int cmd_p(char *args) {
-	char* arg = strtok(NULL," ");
+//	char* arg = strtok(NULL," ");
   bool bflag = true;
  	bool* success = &bflag;
-	expr(arg,success);
+	expr(args,success);
 	return 0;
 }
 //指令结构体：名称，描述，函数名
