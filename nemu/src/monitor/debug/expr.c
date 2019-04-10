@@ -145,29 +145,30 @@ bool check_parentheses(int p, int q) {
 }
 
 int pri[256][256]={0};//优先级a-b>,<=0
-//寻找分割运算符
+//寻找分割运算符，q传入时是nr_token-1!!!
 int find_dominated_op(int p, int q) {
- pri['+']['+'] = 0;
-pri['+']['-'] = 0;
-pri['+']['*'] = -1;
-pri['+']['/'] = -1;
+  //为什么只能在函数内部赋值？？
+	pri['+']['+'] = 0;
+	pri['+']['-'] = 0;
+	pri['+']['*'] = -1;
+	pri['+']['/'] = -1;
 
-pri['-']['+'] = 0;
-pri['-']['-'] = 0;
-pri['-']['*'] = -1;
-pri['-']['/'] = -1;
+	pri['-']['+'] = 0;
+	pri['-']['-'] = 0;
+	pri['-']['*'] = -1;
+	pri['-']['/'] = -1;
 
-pri['*']['+'] = 1;
-pri['*']['-'] = 1;
-pri['*']['*'] = 0;
-pri['*']['/'] = 0;
+	pri['*']['+'] = 1;
+	pri['*']['-'] = 1;
+	pri['*']['*'] = 0;
+	pri['*']['/'] = 0;
 
-pri['/']['+'] = 1;
-pri['/']['-'] = 1;
-pri['/']['*'] = 0;
-pri['/']['/'] = 0;
+	pri['/']['+'] = 1;
+	pri['/']['-'] = 1;
+	pri['/']['*'] = 0;
+	pri['/']['/'] = 0;
   int top = -1,ans = p+1;
-	for(int i = p+2; i <= q; i++) {
+  for(int i = p+2; i <= q; i++) {
     if(tokens[i].type == '('){
 			top++;
 			continue;
@@ -197,8 +198,18 @@ uint32_t eval(int p, int q) {
 		return eval(p+1, q-1);
 	}
 	else {
-    return 1;
-	}
+    int op = find_dominated_op(p,q);
+		uint32_t val1 = eval(p,op-1);
+    uint32_t val2 = eval(op+1,q);
+		switch(tokens[op].type) {
+		  case '+': return val1 + val2;break;
+		  case '-': return val1 - val2;break;
+      case '*': return val1 * val2;break;
+		  case '/': return val1 / val2;break;
+		  default: assert(0);
+		//	return 1;
+		}
+  }
 }
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -207,10 +218,11 @@ uint32_t expr(char *e, bool *success) {
   }
   if(check_parentheses(0,nr_token))Log("Check Result: expression is contained by brackets!\n");
 	else Log("Check Result: expression is not contained by brackets!\n");
-  Log("Total num: %d    Find the dominant pos: %d",nr_token,find_dominated_op(0,nr_token-1));
+  Log("Total num: %d    Find the dominant pos: %d\n",nr_token,find_dominated_op(0,nr_token-1));
 	//  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
 //  Log("to do after\n");
+  Log("Expression result: %u\n",eval(0,nr_token));
   return 0;
 }
