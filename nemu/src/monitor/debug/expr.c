@@ -95,8 +95,8 @@ static bool make_token(char *e) {
 				char* substr = (char*)malloc(32*sizeof(char));
 				strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
-				assert(substr_len <= 12);
-				if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
+				assert(substr_len <= 32);//溢出时提示
+			//	if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
