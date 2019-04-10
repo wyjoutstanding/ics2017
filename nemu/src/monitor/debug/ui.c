@@ -102,7 +102,7 @@ static int cmd_x(char *args) {
 	return 0;
 }
 static int cmd_p(char *args) {
-//	char* arg = strtok(NULL," ");
+//	char* arg = strtok(NULL," ");因为p后面的表达式可能存在空格，所以直接传递字符串即可
   bool bflag = true;
  	bool* success = &bflag;
 	expr(args,success);
