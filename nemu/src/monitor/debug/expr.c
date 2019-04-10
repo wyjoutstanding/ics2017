@@ -216,13 +216,13 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  if(check_parentheses(0,nr_token))Log("Check Result: expression is contained by brackets!\n");
-	else Log("Check Result: expression is not contained by brackets!\n");
-  Log("Total num: %d    Find the dominant pos: %d\n",nr_token,find_dominated_op(0,nr_token-1));
+//  if(check_parentheses(0,nr_token))Log("Check Result: expression is contained by brackets!\n");
+//	else Log("Check Result: expression is not contained by brackets!\n");
+//  Log("Total num: %d    Find the dominant pos: %d\n",nr_token,find_dominated_op(0,nr_token-1));
 	//  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
 //  Log("to do after\n");
-  Log("Expression result: %u\n",eval(0,nr_token));
+  Log("Expression result: %u\n",eval(0,nr_token-1));
   return 0;
 }
