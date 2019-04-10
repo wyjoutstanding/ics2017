@@ -92,7 +92,7 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 				//取子串
-				char* substr = (char*)malloc(32);
+				char* substr = (char*)malloc(32*sizeof(char));
 				strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
 				if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
@@ -106,7 +106,7 @@ static bool make_token(char *e) {
 				  case TK_DEC: tokens[nr_token].type = TK_DEC; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
           case TK_REG: tokens[nr_token].type = TK_REG; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
 				  case TK_NOTYPE: break;//tokens[nr_token].type = TK_DEC; tokens[nr_token++].str = substr;
-				  case TK_EQ: tokens[nr_token++].type = TK_EQ;// tokens[nr_token++].str = "==\0";break;
+				  case TK_EQ: tokens[nr_token].type = TK_EQ; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;// tokens[nr_token++].str = "==\0";break;
 					default:tokens[nr_token++].type = rules[i].token_type;break;
 				}
         break;
@@ -122,6 +122,7 @@ static bool make_token(char *e) {
 
 	for(int j = 0; j < nr_token; j++) {
 		if(tokens[j].str[0] != '\0')Log("type:%d  token:%s",tokens[j].type,tokens[j].str);
+		else Log("type:%d token2:%c",tokens[j].type,tokens[j].type);
 	}	
   return true;
 }
