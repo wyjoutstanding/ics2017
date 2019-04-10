@@ -127,12 +127,27 @@ static bool make_token(char *e) {
 	}	
   return true;
 }
-
+//检查括号匹配合法&&最外层是否有括号
+bool check_parentheses() {
+  bool isMatch;//合法，最外层有括号
+	int top = -1;//判断是否合法
+	if(tokens[0].type == 40)isMatch = true;//第一个是否为(
+	else isMatch = false;
+	//遍历所有token
+	for(int i = 0; i < nr_token; i++) {
+		if(i < nr_token && top == -1)isMatch = false;//最外层无括号
+	  if(tokens[i].type == 40)top++;
+		else if(tokens[i].type == 41)top--;
+	}
+	assert(top == -1);//不合法报错，直接停止
+	return isMatch;//合法表达式，判断是否有最外层括号
+}
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
+  if(check_parentheses())Log("括号匹配成功！\n");
 //  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
