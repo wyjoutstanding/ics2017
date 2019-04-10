@@ -147,7 +147,8 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  if(check_parentheses())Log("括号匹配成功！\n");
+  if(check_parentheses())Log("Check Result: expression is contained by brackets!\n");
+	else Log("Check Result: expression is not contained by brackets!\n");
 //  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
