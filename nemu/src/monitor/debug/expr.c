@@ -130,7 +130,7 @@ uint32_t expr(char *e, bool *success) {
   }
 //  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+//  TODO();
 //  Log("to do after\n");
   return 0;
 }
