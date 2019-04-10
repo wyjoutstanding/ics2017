@@ -120,6 +120,9 @@ static bool make_token(char *e) {
     }
   }
 
+	for(int j = 0; j < nr_token; j++) {
+		if(tokens[j].str[0] != '\0')Log("type:%d  token:%s",tokens[j].type,tokens[j].str);
+	}	
   return true;
 }
 
