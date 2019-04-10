@@ -166,11 +166,17 @@ pri['/']['+'] = 1;
 pri['/']['-'] = 1;
 pri['/']['*'] = 0;
 pri['/']['/'] = 0;
- int top = -1,ans = p+1;
+  int top = -1,ans = p+1;
 	for(int i = p+2; i <= q; i++) {
-    if(tokens[i].type == '(')top++;
-		if(tokens[i].type == ')')top--;
-		if(tokens[i].type < 200 && top == -1) {//数值型&&非括号内
+    if(tokens[i].type == '('){
+			top++;
+			continue;
+		}
+		if(tokens[i].type == ')'){
+			top--;
+			continue;
+		}
+		if(tokens[i].type < 150 && top == -1) {//数值型&&非括号内
 			if(pri[tokens[ans].type][tokens[i].type] >= 0) ans = i;//先取优先级低&&同优先取最右
 		}
 	}
