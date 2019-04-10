@@ -95,6 +95,7 @@ static bool make_token(char *e) {
 				char* substr = (char*)malloc(32*sizeof(char));
 				strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
+				assert(substr_len <= 12);
 				if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
@@ -105,9 +106,9 @@ static bool make_token(char *e) {
 					case TK_HEX: tokens[nr_token].type = TK_HEX; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
 				  case TK_DEC: tokens[nr_token].type = TK_DEC; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
           case TK_REG: tokens[nr_token].type = TK_REG; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
-				  case TK_NOTYPE: break;//tokens[nr_token].type = TK_DEC; tokens[nr_token++].str = substr;
-				  case TK_EQ: tokens[nr_token].type = TK_EQ; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;// tokens[nr_token++].str = "==\0";break;
-					default:tokens[nr_token].type = rules[i].token_type; tokens[nr_token++].str[0] = '\0';break;
+				  case TK_NOTYPE: break;//空格，不记录
+				  case TK_EQ: tokens[nr_token].type = TK_EQ; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
+					default:tokens[nr_token].type = rules[i].token_type; tokens[nr_token++].str[0] = '\0';break;//+-*/()等符号均用ASCII码表示类型
 				}
         break;
 
@@ -119,7 +120,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
+  //Printing tokens to test 
 	for(int j = 0; j < nr_token; j++) {
 		if(tokens[j].str[0] != '\0')Log("type:%d  token:%s",tokens[j].type,tokens[j].str);
 		else Log("type:%d token2:%c",tokens[j].type,tokens[j].type);
