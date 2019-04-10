@@ -135,7 +135,7 @@ bool check_parentheses() {
 	else isMatch = false;
 	//遍历所有token
 	for(int i = 0; i < nr_token; i++) {
-		if(i < nr_token && top == -1)isMatch = false;//最外层无括号
+		if(i != 0 && i < nr_token && top == -1)isMatch = false;//最外层无括号
 	  if(tokens[i].type == 40)top++;
 		else if(tokens[i].type == 41)top--;
 	}
