@@ -107,7 +107,7 @@ static bool make_token(char *e) {
           case TK_REG: tokens[nr_token].type = TK_REG; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
 				  case TK_NOTYPE: break;//tokens[nr_token].type = TK_DEC; tokens[nr_token++].str = substr;
 				  case TK_EQ: tokens[nr_token].type = TK_EQ; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;// tokens[nr_token++].str = "==\0";break;
-					default:tokens[nr_token++].type = rules[i].token_type;break;
+					default:tokens[nr_token].type = rules[i].token_type; tokens[nr_token].str[0] = '\0';break;
 				}
         break;
 
