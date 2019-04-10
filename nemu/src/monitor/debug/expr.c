@@ -127,30 +127,82 @@ static bool make_token(char *e) {
 	}	
   return true;
 }
-//检查括号匹配合法&&最外层是否有括号
-bool check_parentheses() {
+//检查括号匹配合法&&最外层是否有括号:p,q为起止位置
+bool check_parentheses(int p, int q) {
   bool isMatch;//合法，最外层有括号
 	int top = -1;//判断是否合法
-	if(tokens[0].type == 40)isMatch = true;//第一个是否为(
+	if(tokens[p].type == 40)isMatch = true;//第一个是否为(
 	else isMatch = false;
 	//遍历所有token
-	for(int i = 0; i < nr_token; i++) {
-		assert(top >= -1);//判断错误
-		if(i != 0 && i < nr_token && top == -1)isMatch = false;//最外层无括号
+	for(int i = p; i < q+1; i++) {
+		assert(top >= -1);//判断错误，处理左右括号数目相等的情况
+		if(i != p && i < q+1 && top == -1)isMatch = false;//最外层无括号
 	  if(tokens[i].type == 40)top++;
 		else if(tokens[i].type == 41)top--;
 	}
 	assert(top == -1);//不合法报错，直接停止
 	return isMatch;//合法表达式，判断是否有最外层括号
 }
+
+int pri[256][256]={0};//优先级a-b>,<=0
+//寻找分割运算符
+int find_dominated_op(int p, int q) {
+ pri['+']['+'] = 0;
+pri['+']['-'] = 0;
+pri['+']['*'] = -1;
+pri['+']['/'] = -1;
+
+pri['-']['+'] = 0;
+pri['-']['-'] = 0;
+pri['-']['*'] = -1;
+pri['-']['/'] = -1;
+
+pri['*']['+'] = 1;
+pri['*']['-'] = 1;
+pri['*']['*'] = 0;
+pri['*']['/'] = 0;
+
+pri['/']['+'] = 1;
+pri['/']['-'] = 1;
+pri['/']['*'] = 0;
+pri['/']['/'] = 0;
+ int top = -1,ans = p+1;
+	for(int i = p+2; i <= q; i++) {
+    if(tokens[i].type == '(')top++;
+		if(tokens[i].type == ')')top--;
+		if(tokens[i].type < 200 && top == -1) {//数值型&&非括号内
+			if(pri[tokens[ans].type][tokens[i].type] >= 0) ans = i;//先取优先级低&&同优先取最右
+		}
+	}
+	return ans;
+}
+//求值递归BNF
+uint32_t eval(int p, int q) {
+  if(p > q){
+		assert(0);
+	}
+	else if(p == q) {
+		uint32_t result;
+		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%u",&result);
+		else if(tokens[p].type == TK_HEX)sscanf(tokens[p].str,"%x",&result);
+		return result;
+	}
+	else if(check_parentheses(p,q) == true) {
+		return eval(p+1, q-1);
+	}
+	else {
+    return 1;
+	}
+}
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
-  if(check_parentheses())Log("Check Result: expression is contained by brackets!\n");
+  if(check_parentheses(0,nr_token))Log("Check Result: expression is contained by brackets!\n");
 	else Log("Check Result: expression is not contained by brackets!\n");
-//  Log("to do before\n");
+  Log("Find the dominant pos: %d",find_dominated_op(0,nr_token));
+	//  Log("to do before\n");
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
 //  Log("to do after\n");
