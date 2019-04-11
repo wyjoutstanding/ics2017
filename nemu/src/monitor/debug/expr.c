@@ -199,6 +199,7 @@ uint32_t eval(int p, int q) {
 	}
 	else {
     int op = find_dominated_op(p,q);
+		Log("-------op:%d---------\n",op);
 		uint32_t val1 = eval(p,op-1);
     uint32_t val2 = eval(op+1,q);
 		switch(tokens[op].type) {
