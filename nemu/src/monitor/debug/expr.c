@@ -50,10 +50,10 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
- 	{"-", '-'},						// sub
-	{"\\*", '*'},					// mul
-	{"/", '/'},						// div
-  {"\\+", '+'},         // plus
+ 	{"-", TK_SUB},						// sub
+	{"\\*", TK_MUL},					// mul
+	{"/", TK_DIV},						// div
+  {"\\+", TK_PLUS},         // plus
  
  	{"==", TK_EQ},        // equal
  	{"!=", TK_NEQ},       // not equal
