@@ -237,12 +237,12 @@ int find_dominated_op(int p, int q) {
 	return ans;
 }
 //求值递归BNF
-int eval(int p, int q) {
+uint32_t eval(int p, int q) {
   if(p > q){//处理错误表达式如 04
 		assert(0);
 	}
 	else if(p == q) {//10,16进制转换数值
-    int result;
+    uint32_t result;
 		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%d",&result);
 		else if(tokens[p].type == TK_HEX)sscanf(tokens[p].str,"%x",&result);
 		return result;
@@ -254,17 +254,17 @@ int eval(int p, int q) {
 	else {//找到分界运算符，递归求子表达式
     int op = find_dominated_op(p,q);
 		Log("-------op:%d---------\n",op);
-		int val1 = -1;
+		uint32_t val1 = 0;
 		int type = tokens[op].type;
 		if(type != TK_NEG && type != TK_DEREF && type != TK_NOT)val1 = eval(p,op-1);
-    int val2 = eval(op+1,q);
+    uint32_t val2 = eval(op+1,q);
 		switch(tokens[op].type) {
 		  case TK_PLUS: return val1 + val2;break;
 		  case TK_SUB: return val1 - val2;break;
       case TK_MUL: return val1 * val2;break;
 		  case TK_DIV: return val1 / val2;break;
 		  case TK_NEG: return -val2;
-	    case TK_DEREF: return -val2;//指针取引用
+	    case TK_DEREF: return vaddr_read(val2,4);//指针取引用
 	    case TK_NOT: return !val2;
 		  default: assert(0);
 		}
