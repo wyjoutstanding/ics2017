@@ -168,7 +168,7 @@ int find_dominated_op(int p, int q) {
 	pri['/']['*'] = 0;
 	pri['/']['/'] = 0;
   int top = -1,ans = p+1;
-  for(int i = p+2; i <= q; i++) {
+  for(int i = p+1; i <= q; i++) {
     if(tokens[i].type == '('){
 			top++;
 			continue;
