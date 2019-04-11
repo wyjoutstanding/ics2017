@@ -145,7 +145,7 @@ bool check_parentheses(int p, int q) {
 }
 
 int pri[256][256]={0};//优先级a-b>,<=0
-//寻找分割运算符，q传入时是nr_token-1!!!
+//寻找分割运算符，q传入时是nr_token-1!!!前提：表达式正确
 int find_dominated_op(int p, int q) {
   //为什么只能在函数内部赋值？？
 	pri['+']['+'] = 0;
@@ -189,16 +189,16 @@ uint32_t eval(int p, int q) {
   if(p > q){//处理错误表达式如 04
 		assert(0);
 	}
-	else if(p == q) {
+	else if(p == q) {//10,16进制转换数值
 		uint32_t result;
 		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%u",&result);
 		else if(tokens[p].type == TK_HEX)sscanf(tokens[p].str,"%x",&result);
 		return result;
 	}
 	else if(check_parentheses(p,q) == true) {
-		return eval(p+1, q-1);
+		return eval(p+1, q-1);//去除最外层括号
 	}
-	else {
+	else {//找到分界运算符，递归求子表达式
     int op = find_dominated_op(p,q);
 		Log("-------op:%d---------\n",op);
 		uint32_t val1 = eval(p,op-1);
@@ -209,7 +209,6 @@ uint32_t eval(int p, int q) {
       case '*': return val1 * val2;break;
 		  case '/': return val1 / val2;break;
 		  default: assert(0);
-		//	return 1;
 		}
   }
 }
