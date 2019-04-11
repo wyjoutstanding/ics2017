@@ -66,8 +66,9 @@ static int cmd_info(char *args) {
 
 			for(int i = 0; i < 8; i++) {
 				 printf("%s\t0x%02x\t%u\n",regsb[i],cpu.gpr[i%4]._8[i/4],cpu.gpr[i%4]._8[i/4]);
+
 			}
-			printf("\neip\t0x%08x\n",cpu.eip);
+			printf("\neip\t0x%08x\t%u\n",cpu.eip,cpu.eip);
 	 	}
 		else if(strcmp(arg,"w") == 0) {
 
@@ -101,13 +102,6 @@ static int cmd_x(char *args) {
 	}	
 	return 0;
 }
-static int cmd_p(char *args) {
-//	char* arg = strtok(NULL," ");因为p后面的表达式可能存在空格，所以直接传递字符串即可
-  bool bflag = true;
- 	bool* success = &bflag;
-	expr(args,success);
-	return 0;
-}
 //指令结构体：名称，描述，函数名
 static struct {
   char *name;
@@ -120,8 +114,7 @@ static struct {
   { "si", "Execute in step", cmd_si},
   { "info","r --show all of registers infomation \n     - w --others",cmd_info}, 
   { "x","scan memory",cmd_x},
-  { "p","Expression value",cmd_p},
-	/* TODO: Add more commands */
+  /* TODO: Add more commands */
 
 };
 
