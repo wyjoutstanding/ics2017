@@ -185,7 +185,7 @@ int find_dominated_op(int p, int q) {
 }
 //求值递归BNF
 uint32_t eval(int p, int q) {
-  if(p > q){
+  if(p > q){//处理错误表达式如 04
 		assert(0);
 	}
 	else if(p == q) {
