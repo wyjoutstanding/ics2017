@@ -83,6 +83,7 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
 //    Log("e_pos:%c\n",e[position]);
+    bool isNeg = false;//判断是否有负号
 		for (i = 0; i < NR_REGEX; i ++) {
      if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
@@ -91,9 +92,21 @@ static bool make_token(char *e) {
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
+				//负号处理
+				int t = rules[i].token_type;
+				if(t == '-') {
+					if(i == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
+						isNeg = true;
+						continue;
+					}
+				}
 				//取子串
 				char* substr = (char*)malloc(32*sizeof(char));
-				strncpy(substr,substr_start,substr_len);
+				if(isNeg) {
+					strncpy(substr,substr_start-1,substr_len+1);
+					isNeg = false;
+				}
+				else 	strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
 				assert(substr_len <= 32);//溢出时提示
 			//	if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
@@ -185,13 +198,13 @@ int find_dominated_op(int p, int q) {
 	return ans;
 }
 //求值递归BNF
-uint32_t eval(int p, int q) {
+int eval(int p, int q) {
   if(p > q){//处理错误表达式如 04
 		assert(0);
 	}
 	else if(p == q) {//10,16进制转换数值
-		uint32_t result;
-		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%u",&result);
+    int result;
+		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%d",&result);
 		else if(tokens[p].type == TK_HEX)sscanf(tokens[p].str,"%x",&result);
 		return result;
 	}
@@ -201,8 +214,8 @@ uint32_t eval(int p, int q) {
 	else {//找到分界运算符，递归求子表达式
     int op = find_dominated_op(p,q);
 		Log("-------op:%d---------\n",op);
-		uint32_t val1 = eval(p,op-1);
-    uint32_t val2 = eval(op+1,q);
+		int val1 = eval(p,op-1);
+    int val2 = eval(op+1,q);
 		switch(tokens[op].type) {
 		  case '+': return val1 + val2;break;
 		  case '-': return val1 - val2;break;
@@ -224,6 +237,6 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
 //  Log("to do after\n");
-  Log("Expression result: %u\n",eval(0,nr_token-1));
+  Log("Expression result: %d\n",eval(0,nr_token-1));
   return 0;
 }
