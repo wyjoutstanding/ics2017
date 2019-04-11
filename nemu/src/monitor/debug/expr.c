@@ -83,28 +83,29 @@ static bool make_token(char *e) {
   while (e[position] != '\0') {
     /* Try all rules one by one. */
 //    Log("e_pos:%c\n",e[position]);
-  		for (i = 0; i < NR_REGEX; i ++) {
-     if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
+    for (i = 0; i < NR_REGEX; i ++) {
+      if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
-				//负号处理
+				//==========负号处理=========
 				int tmp = rules[i].token_type;
 				if(tmp == '-') {
 					int t = -1;
 				  if(nr_token != 0)	t = tokens[nr_token-1].type;
+					//负号判别：-为首个识别字符或前一个token是+,-,*,/,( 中的一个
 					if(nr_token == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
 						isNeg = true;
-						break;
+						break;//跳出for循环，即不记录当前值，识别下一个token时再加入
 					}
 				}
 				//取子串
 				char* substr = (char*)malloc(32*sizeof(char));
-				if(isNeg) {
-					strncpy(substr,--substr_start,++substr_len);
+				if(isNeg) {//负数向前取一位
+					strncpy(substr,--substr_start,++substr_len);//后面有用到长度，所以同步更新
 					isNeg = false;
 				}
 				else 	strncpy(substr,substr_start,substr_len);
