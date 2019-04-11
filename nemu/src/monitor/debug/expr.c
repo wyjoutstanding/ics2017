@@ -282,6 +282,6 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
 //  TODO();
 //  Log("to do after\n");
-  Log("Expression result: %d\n",eval(0,nr_token-1));
+  Log("Expression result: %x\n",eval(0,nr_token-1));
   return 0;
 }
