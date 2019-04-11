@@ -103,7 +103,7 @@ static bool make_token(char *e) {
 				//取子串
 				char* substr = (char*)malloc(32*sizeof(char));
 				if(isNeg) {
-					strncpy(substr,substr_start-1,substr_len+1);
+					strncpy(substr,--substr_start,++substr_len);
 					isNeg = false;
 				}
 				else 	strncpy(substr,substr_start,substr_len);
