@@ -167,8 +167,8 @@ int find_dominated_op(int p, int q) {
 	pri['/']['-'] = 1;
 	pri['/']['*'] = 0;
 	pri['/']['/'] = 0;
-  int top = -1,ans = p+1;
-  for(int i = p+1; i <= q; i++) {
+  int top = -1,ans = -1;
+  for(int i = p; i <= q; i++) {
     if(tokens[i].type == '('){
 			top++;
 			continue;
@@ -178,6 +178,7 @@ int find_dominated_op(int p, int q) {
 			continue;
 		}
 		if(tokens[i].type < 150 && top == -1) {//数值型&&非括号内
+			if(ans == -1)ans = tokens[i].type;//第一次找到operator
 			if(pri[tokens[ans].type][tokens[i].type] >= 0) ans = i;//先取优先级低&&同优先取最右
 		}
 	}
