@@ -283,6 +283,6 @@ uint32_t expr(char *e, bool *success) {
 //  TODO();
 //  Log("to do after\n");
   uint32_t ans = eval(0,nr_token-1);
-  printf("Expression result Hexadecimal: %x\t Decimal:%d\n",ans,ans);
+  printf("Expression result Hexadecimal: 0x%08x\t Decimal:%d\n",ans,ans);
   return 0;
 }
