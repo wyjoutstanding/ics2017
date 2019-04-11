@@ -93,9 +93,11 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 				//负号处理
-				int t = rules[i].token_type;
-				if(t == '-') {
-					if(i == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
+				int tmp = rules[i].token_type;
+				if(tmp == '-') {
+					int t = -1;
+				  if(nr_token != 0)	t = tokens[nr_token-1].type;
+					if(nr_token == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
 						isNeg = true;
 						break;
 					}
