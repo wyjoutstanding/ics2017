@@ -125,7 +125,7 @@ static bool make_token(char *e) {
 					int t = -1;
 				  if(nr_token != 0)	t = tokens[nr_token-1].type;
 					//负号判别：-为首个识别字符或前一个token是+,-,*,/,( 中的一个
-					if(nr_token == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
+					if(nr_token == 0 || (t == TK_PLUS || t == TK_SUB || t == TK_MUL || t == TK_DIV || t == '(')){
 						type = TK_NEG ;
 					//	break;//跳出for循环，即不记录当前值，识别下一个token时再加入
 					}
