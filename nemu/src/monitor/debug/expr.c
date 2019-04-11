@@ -61,7 +61,11 @@ static struct rule {
   {"\\|\\|", TK_OR},    // or
   {"!", TK_NOT},        // not
   {"\\*", TK_DEREF},    // decompose reference
-    
+	{"!", TK_NOT},        //not
+  {"<", TK_L},
+  {"<=", TK_LE},
+  {">", TK_G},
+  {">=", TK_GE},	
 
 	{"0x[0-9a-fA-F]{1,8}", TK_HEX},//hexadecimal
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)", TK_REG},//reg
@@ -134,11 +138,12 @@ static bool make_token(char *e) {
 					int t = -1;
 				  if(nr_token != 0)	t = tokens[nr_token-1].type;
 					//负号判别：-为首个识别字符或前一个token是+,-,*,/,( 中的一个
-					if(nr_token == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
+					if(nr_token == 0 || (t == TK_PLUS || t == TK_SUB || t == TK_MUL || t == TK_DIV || t == '(')){
 						type = TK_DEREF ;
 					//	break;//跳出for循环，即不记录当前值，识别下一个token时再加入
 					}
-				}//取子串
+				}
+				//取子串
 				char* substr = (char*)malloc(32*sizeof(char));
 			 	strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
