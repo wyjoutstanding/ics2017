@@ -102,6 +102,13 @@ static int cmd_x(char *args) {
 	}	
 	return 0;
 }
+static int cmd_p(char *args) {
+	bool success = true;
+  expr(args,&success);
+	if(success)printf("expr is ok\n");
+	else printf("expr is error\n");
+	return 0;
+}
 //指令结构体：名称，描述，函数名
 static struct {
   char *name;
@@ -114,7 +121,8 @@ static struct {
   { "si", "Execute in step", cmd_si},
   { "info","r --show all of registers infomation \n     - w --others",cmd_info}, 
   { "x","scan memory",cmd_x},
-  /* TODO: Add more commands */
+  { "p","evaluate expression",cmd_p},
+ 	/* TODO: Add more commands */
 
 };
 
