@@ -97,7 +97,7 @@ static bool make_token(char *e) {
 				if(t == '-') {
 					if(i == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
 						isNeg = true;
-						continue;
+						break;
 					}
 				}
 				//取子串
