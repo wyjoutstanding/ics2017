@@ -9,12 +9,34 @@
 //token的类型，只要每种类型对应的整型不同即可，其余用ASCII码表示
 enum {
   TK_NOTYPE = 256,//space
- 	TK_EQ = 255,//==
-	TK_HEX = 254,//16进制
+  TK_HEX = 254,//16进制
 	TK_DEC = 253,//10进制
 	TK_REG = 252,//$eax...
 
-  /* TODO: Add more token types */
+  //数值代表优先级，相差10以内表示同优先级
+	//===========单目运算===========
+	TK_NOT = 240,// !	
+	TK_NEG = 239,// neg
+	TK_DEREF = 238,//*
+  //=============双目运算=============
+	//算数运算符
+	TK_MUL = 230,// *
+	TK_DIV = 229,// /
+	
+	TK_PLUS = 220,//+
+	TK_SUB = 219,//-
+  //逻辑运算符
+	TK_L = 210,//<
+	TK_LE = 209,//<=
+	TK_G = 208,//>
+	TK_GE = 207,//>=
+  
+	TK_EQ = 200,//==
+	TK_NEQ = 199,//!=
+	
+	TK_AND = 190,// &&
+	TK_OR = 189,// ||
+	  /* TODO: Add more token types */
 
 };
 //检测不同类型的规则
@@ -28,17 +50,24 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
+ 	{"-", '-'},						// sub
+	{"\\*", '*'},					// mul
+	{"/", '/'},						// div
   {"\\+", '+'},         // plus
-  {"==", TK_EQ},        // equal
+ 
+ 	{"==", TK_EQ},        // equal
+ 	{"!=", TK_NEQ},       // not equal
+  {"&&", TK_AND},       // and
+  {"\\|\\|", TK_OR},    // or
+  {"!", TK_NOT},        // not
+  {"\\*", TK_DEREF},    // decompose reference
+    
 
 	{"0x[0-9a-fA-F]{1,8}", TK_HEX},//hexadecimal
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)", TK_REG},//reg
   {"0|([1-9][0-9]*)",TK_DEC},//decimal，考虑到'('可以紧贴，所以将^,$暂时去除
 
-	{"-", '-'},						// sub
-	{"\\*", '*'},					// mul
-	{"/", '/'},						// div
-  
+
 	{"\\(", '('},					//brakets is special in regex !!!
 	{"\\)", ')'},
 };
@@ -79,7 +108,6 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-  bool isNeg = false;//判断是否有负号
   while (e[position] != '\0') {
     /* Try all rules one by one. */
 //    Log("e_pos:%c\n",e[position]);
@@ -92,23 +120,27 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 				//==========负号处理=========
-				int tmp = rules[i].token_type;
-				if(tmp == '-') {
+				int type = rules[i].token_type;
+				if(type == TK_SUB) {
 					int t = -1;
 				  if(nr_token != 0)	t = tokens[nr_token-1].type;
 					//负号判别：-为首个识别字符或前一个token是+,-,*,/,( 中的一个
 					if(nr_token == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
-						isNeg = true;
-						break;//跳出for循环，即不记录当前值，识别下一个token时再加入
+						type = TK_NEG ;
+					//	break;//跳出for循环，即不记录当前值，识别下一个token时再加入
 					}
 				}
-				//取子串
+				else if(type == TK_MUL) {
+					int t = -1;
+				  if(nr_token != 0)	t = tokens[nr_token-1].type;
+					//负号判别：-为首个识别字符或前一个token是+,-,*,/,( 中的一个
+					if(nr_token == 0 || (t == '+' || t == '-' || t == '*' || t == '/' || t == '(')){
+						type = TK_DEREF ;
+					//	break;//跳出for循环，即不记录当前值，识别下一个token时再加入
+					}
+				}//取子串
 				char* substr = (char*)malloc(32*sizeof(char));
-				if(isNeg) {//负数向前取一位
-					strncpy(substr,--substr_start,++substr_len);//后面有用到长度，所以同步更新
-					isNeg = false;
-				}
-				else 	strncpy(substr,substr_start,substr_len);
+			 	strncpy(substr,substr_start,substr_len);
 				substr[substr_len] = '\0';
 				assert(substr_len <= 32);//溢出时提示
 			//	if(substr_len >= 32)Log("substr_len is overflow 32!!in make_token");//以后处理
@@ -117,13 +149,13 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        switch (rules[i].token_type) {
-					case TK_HEX: tokens[nr_token].type = TK_HEX; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
-				  case TK_DEC: tokens[nr_token].type = TK_DEC; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
-          case TK_REG: tokens[nr_token].type = TK_REG; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
+        switch (type) {
+					//case TK_HEX: tokens[nr_token].type = TK_HEX; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
+				  //case TK_DEC: tokens[nr_token].type = TK_DEC; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
+         // case TK_REG: tokens[nr_token].type = TK_REG; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
 				  case TK_NOTYPE: break;//空格，不记录
-				  case TK_EQ: tokens[nr_token].type = TK_EQ; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
-					default:tokens[nr_token].type = rules[i].token_type; tokens[nr_token++].str[0] = '\0';break;//+-*/()等符号均用ASCII码表示类型
+				 // case TK_EQ: tokens[nr_token].type = TK_EQ; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;
+					default:tokens[nr_token].type = type; memset(tokens[nr_token].str,'\0',32); strcpy(tokens[nr_token++].str,substr);break;//+-*/()等符号均用ASCII码表示类型
 				}
         break;
 
@@ -192,9 +224,9 @@ int find_dominated_op(int p, int q) {
 			top--;
 			continue;
 		}
-		if(tokens[i].type < 150 && top == -1) {//数值型&&非括号内
-			if(ans == -1)ans = tokens[i].type;//第一次找到operator
-			if(pri[tokens[ans].type][tokens[i].type] >= 0) ans = i;//先取优先级低&&同优先取最右
+		if(tokens[i].type < 241 && top == -1) {//数值型&&非括号内
+			if(ans == -1)ans = i;//第一次找到operator
+			if(tokens[ans].type-tokens[i].type >= -4) ans = i;//先取优先级低&&同优先取最右
 		}
 	}
 	return ans;
@@ -216,13 +248,15 @@ int eval(int p, int q) {
 	else {//找到分界运算符，递归求子表达式
     int op = find_dominated_op(p,q);
 		Log("-------op:%d---------\n",op);
-		int val1 = eval(p,op-1);
+		int val1 = -1;
+		if(tokens[op].type != TK_NEG)val1 = eval(p,op-1);
     int val2 = eval(op+1,q);
 		switch(tokens[op].type) {
-		  case '+': return val1 + val2;break;
-		  case '-': return val1 - val2;break;
-      case '*': return val1 * val2;break;
-		  case '/': return val1 / val2;break;
+		  case TK_PLUS: return val1 + val2;break;
+		  case TK_SUB: return val1 - val2;break;
+      case TK_MUL: return val1 * val2;break;
+		  case TK_DIV: return val1 / val2;break;
+		  case TK_NEG: return -val2;
 		  default: assert(0);
 		}
   }
