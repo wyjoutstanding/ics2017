@@ -62,10 +62,10 @@ static struct rule {
   {"!", TK_NOT},        // not
   {"\\*", TK_DEREF},    // decompose reference
 	{"!", TK_NOT},        //not
+  {"<=", TK_LE},				//pay attention to sequence
+	{">=", TK_GE},	
   {"<", TK_L},
-  {"<=", TK_LE},
   {">", TK_G},
-  {">=", TK_GE},	
 
 	{"0x[0-9a-fA-F]{1,8}", TK_HEX},//hexadecimal
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", TK_REG},//reg
