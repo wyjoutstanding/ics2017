@@ -266,6 +266,12 @@ uint32_t eval(int p, int q) {
 		  case TK_NEG: return -val2;
 	    case TK_DEREF: return vaddr_read(val2,4);//指针取引用
 	    case TK_NOT: return !val2;
+		  case TK_NEQ: return val1 != val2;
+			case TK_EQ : return val1 == val2;
+		  case TK_L  : return val1 < val2;
+		  case TK_G  : return val1 > val2;
+		  case TK_LE : return val1 <= val2;
+		  case TK_GE : return val1 >= val2;
 		  default: assert(0);
 		}
   }
