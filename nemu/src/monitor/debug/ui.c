@@ -85,8 +85,10 @@ static int cmd_x(char *args) {
 	char *arg2 = strtok(NULL," ");//起始地址vaddr
 	int len = atoi(arg1);
 
+	bool success = true;
 	uint32_t vaddr;
-	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数,表示地址
+	vaddr=expr(arg2,&success);//利用表达式处理地址
+//	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数,表示地址
 	printf("Address       Dword block   Byte sequence\n");
 	
 	uint32_t instr;//存放地址vaddr中的内容
