@@ -245,7 +245,7 @@ uint32_t eval(int p, int q) {
     uint32_t result = 0;
 		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%d",&result);
 		else if(tokens[p].type == TK_HEX)sscanf(tokens[p].str,"%x",&result);
-		else if(tokens[p].type == TK_REG){
+		else if(tokens[p].type == TK_REG){//reg
 			if(strcmp(tokens[p].str+1,"eip") == 0)return cpu.eip;
 		  for(int i = 0; i < 8; i++){
 				if(strcmp(tokens[p].str+1,regsl[i]) == 0){
