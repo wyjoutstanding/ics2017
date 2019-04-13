@@ -242,9 +242,17 @@ uint32_t eval(int p, int q) {
 		assert(0);
 	}
 	else if(p == q) {//10,16进制转换数值
-    uint32_t result;
+    uint32_t result = 0;
 		if(tokens[p].type == TK_DEC)sscanf(tokens[p].str,"%d",&result);
 		else if(tokens[p].type == TK_HEX)sscanf(tokens[p].str,"%x",&result);
+		else if(tokens[p].type == TK_REG){
+		  for(int i = 0; i < 8; i++){
+				if(strcmp(tokens[p].str+1,regsl[i]) == 0){
+          result = reg_l(i);
+					break;
+				}
+			}
+		}
 		return result;
 	}
 	else if(check_parentheses(p,q) == true) {
