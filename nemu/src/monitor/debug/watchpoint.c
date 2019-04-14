@@ -68,7 +68,7 @@ void delete_watchpoint(int NO) {
 		WP* wp = head,*pre=NULL;
 		while(wp != NULL){
 			if(wp->NO == NO){
-				if(pre == NULL)head = NULL;//only one node
+				if(pre == NULL)head = head->next;//only one node or the first node is object
 				else pre->next = wp->next;
 				free_wp(wp);
 				printf("Watchpoint %d deleted!\n",wp->NO);
