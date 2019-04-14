@@ -5,7 +5,7 @@
 
 static WP wp_pool[NR_WP];
 static WP *head, *free_;//both not contain head,so pay attention to the NULL list
-
+//extern static WP* wp_trigger[32];//save the changed watchpoints
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
@@ -103,4 +103,21 @@ void list_watchpoint() {
 			wp = wp->next;
 		}
 	}
+}
+//scan all watchpoints and return all trigger points
+WP* scan_watchpoint(WP* wp_trigger[]){
+	if(head == NULL)return NULL;
+	memset(wp_trigger,'\0',32*4);//initialization
+	int nr_wp = 0;
+  WP* wp = head;
+	bool success = true;
+	while(wp != NULL){
+		wp->new_val = expr(wp->expr,&success);
+		if(wp->new_val != wp->old_val){
+			wp_trigger[nr_wp++] = wp;
+//			wp->old_val = wp->new_val;
+		}
+		wp = wp->next;
+	}
+	return head;
 }
