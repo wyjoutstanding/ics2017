@@ -105,16 +105,16 @@ void list_watchpoint() {
 	}
 }
 //scan all watchpoints and return all trigger points
-WP* scan_watchpoint(WP* wp_trigger[]){
+WP* scan_watchpoint(WP** wp_trigger){
 	if(head == NULL)return NULL;
 	memset(wp_trigger,'\0',32*4);//initialization
 	int nr_wp = 0;
   WP* wp = head;
 	bool success = true;
-	while(wp != NULL){
+	while(wp != NULL){		
 		wp->new_val = expr(wp->expr,&success);
 		if(wp->new_val != wp->old_val){
-			wp_trigger[nr_wp++] = wp;
+			*(wp_trigger+nr_wp++) = wp;
 //			wp->old_val = wp->new_val;
 		}
 		wp = wp->next;
