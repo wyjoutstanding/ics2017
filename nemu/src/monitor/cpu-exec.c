@@ -27,7 +27,8 @@ void cpu_exec(uint64_t n) {
     /*
   	 * Execute one instruction, including instruction fetch,
      * instruction decode, and the actual execution. */
-    exec_wrapper(print_flag);
+    uint32_t old_eip = cpu.eip;
+	 	exec_wrapper(print_flag);
 
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
@@ -36,7 +37,7 @@ void cpu_exec(uint64_t n) {
 		if(p != NULL){
 	   	for(int i = 0; *(wp_trigger + i) != NULL; i++){
 				wp = *(wp_trigger+i);
-				printf("Hit watchpoint %d at address 0x%08x\n",wp->NO,cpu.eip);
+				printf("Hit watchpoint %d at address 0x%08x\n",wp->NO,old_eip);
 				printf("%-10s= %s\n","expr",wp->expr);
 				printf("%-10s= %08x\n","old_val",wp->old_val);
 				printf("%-10s= %08x\n","new_val",wp->new_val);
