@@ -8,6 +8,9 @@
 #include <readline/history.h>
 
 void cpu_exec(uint64_t);
+void list_watchpoint();
+int set_watchpoint(char* e);
+void delete_watchpoint(int NO);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -71,7 +74,7 @@ static int cmd_info(char *args) {
 			printf("\neip\t0x%08x\t%u\n",cpu.eip,cpu.eip);
 	 	}
 		else if(strcmp(arg,"w") == 0) {
-
+      list_watchpoint();
 		}
 		else {
 		    printf("Please check info arguments !\n");
@@ -106,11 +109,24 @@ static int cmd_x(char *args) {
 	}	
 	return 0;
 }
+//表达式求值
 static int cmd_p(char *args) {
 	bool success = true;
   expr(args,&success);
 	if(success)printf("expr is ok\n");
 	else printf("expr is error\n");
+	return 0;
+}
+//set watchpoints
+static int cmd_w(char *args) {
+  set_watchpoint(args);
+	return 0;
+}
+//delete watchpoints
+static int cmd_d(char *args) {
+	int NO;
+	sscanf(args,"%d",&NO);
+  delete_watchpoint(NO);
 	return 0;
 }
 //指令结构体：名称，描述，函数名
@@ -126,7 +142,9 @@ static struct {
   { "info","r --show all of registers infomation \n     - w --others",cmd_info}, 
   { "x","scan memory",cmd_x},
   { "p","evaluate expression",cmd_p},
- 	/* TODO: Add more commands */
+	{ "w", "set watchpoints",cmd_w},
+	{ "d", "delete watchpoint",cmd_d},
+	/* TODO: Add more commands */
 
 };
 
