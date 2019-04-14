@@ -46,14 +46,26 @@ int set_watchpoint(char* e) {
 	wp->old_val = expr(e,&success);
 	memset(wp->expr,'\0',32);
 	strcpy(wp->expr,e);
-	//Link to head list
+	wp->next = NULL;
+	//Link to head list in order
 	if(head == NULL){
 		wp->next = NULL;
 		head = wp;
 	}
 	else {
-		wp->next = head;
-		head = wp;
+	  WP* pre = NULL,*pcur=head;
+		while(pcur != NULL && wp->NO > pcur->NO){
+			pre = pcur;
+			pcur = pcur->next;
+		}
+		if(pre == NULL) {//before the first node
+		  wp->next = head;
+	  	head = wp;
+		}
+		else {
+			wp->next = pcur;
+			pre->next = wp;
+		}
 	}
 	printf("Set watchpoint #%d\nexpr %s\nold_val ox%08x\n",wp->NO,wp->expr,wp->old_val);
   return wp->NO;
