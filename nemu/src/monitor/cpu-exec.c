@@ -11,7 +11,7 @@
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
-WP* scan_watchpoint();
+WP* scan_watchpoint(WP** wp_trigger);
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
@@ -31,11 +31,11 @@ void cpu_exec(uint64_t n) {
 
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
-//		WP* wp_trigger[32];
-/*		WP* p = scan_watchpoint(wp_trigger),*wp = NULL;
-		if(p != NULL)
+		WP* wp_trigger[32];
+		WP* p = scan_watchpoint(wp_trigger),*wp = NULL;
+		if(p != NULL){
 	   	for(int i = 0; i < sizeof(wp_trigger); i++){
-				wp = wp_trigger[i];
+				wp = *(wp_trigger+i);
 				printf("Hit watchpoint %d at address 0x%08x\n",wp->NO,cpu.eip);
 				printf("%-10s= %s\n","expr",wp->expr);
 				printf("%-10s= %08x\n","old_val",wp->old_val);
@@ -44,7 +44,7 @@ void cpu_exec(uint64_t n) {
 				wp->old_val = wp->new_val;
 			}
 			if(sizeof(wp_trigger) != 0)nemu_state = NEMU_STOP;
-		}*/
+		}
 #endif
 
 #ifdef HAS_IOE
