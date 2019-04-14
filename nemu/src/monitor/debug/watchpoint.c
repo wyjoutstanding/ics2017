@@ -99,7 +99,7 @@ void list_watchpoint() {
 		printf("NO   expr       Old Value\n");
 		WP* wp = head;
 		while(wp != NULL){
-			printf("%d   %s       0x%08x\n",wp->NO,wp->expr,wp->old_val);
+			printf("%-8d   %-10s       0x%08x\n",wp->NO,wp->expr,wp->old_val);
 			wp = wp->next;
 		}
 	}
