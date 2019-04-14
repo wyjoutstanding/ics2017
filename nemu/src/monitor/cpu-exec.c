@@ -34,7 +34,7 @@ void cpu_exec(uint64_t n) {
 		WP* wp_trigger[32];
 		WP* p = scan_watchpoint(wp_trigger),*wp = NULL;
 		if(p != NULL){
-	   	for(int i = 0; i < sizeof(wp_trigger); i++){
+	   	for(int i = 0; *(wp_trigger + i) != NULL; i++){
 				wp = *(wp_trigger+i);
 				printf("Hit watchpoint %d at address 0x%08x\n",wp->NO,cpu.eip);
 				printf("%-10s= %s\n","expr",wp->expr);
