@@ -96,10 +96,10 @@ void delete_watchpoint(int NO) {
 void list_watchpoint() {
 	if(head == NULL)printf("There is no watchpoint!\n");
 	else {
-		printf("NO   expr       Old Value\n");
+		printf("%-8s %-10s      Old Value\n","NO","expr");
 		WP* wp = head;
 		while(wp != NULL){
-			printf("%-8d   %-10s       0x%08x\n",wp->NO,wp->expr,wp->old_val);
+			printf("%-8d   %-20s       0x%08x\n",wp->NO,wp->expr,wp->old_val);
 			wp = wp->next;
 		}
 	}
