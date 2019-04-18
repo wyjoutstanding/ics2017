@@ -14,7 +14,9 @@ uint8_t pmem[PMEM_SIZE];
 
 uint32_t paddr_read(paddr_t addr, int len) {
 // printf("pmem u:%p  addr:%p u+len:%p",pmem,(void*)addr,(void*)(pmem+addr));
- return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
+  uint32_t *vaddr =(uint32_t*) 0x100000;
+	printf("vaddr:%08x\n",*vaddr);
+ 	return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
 }
 
 void paddr_write(paddr_t addr, int len, uint32_t data) {
