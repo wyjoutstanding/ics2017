@@ -53,6 +53,7 @@ gdb: $(BINARY)
 clean: 
 	rm -rf $(BUILD_DIR)
 
+#统计去除空行的行数,$$表示$
 count:
-	find -name *.[ch] | xargs cat | wc -l
+	find -name *.[ch] | xargs cat | grep -v ^$$ |  wc -l
 
