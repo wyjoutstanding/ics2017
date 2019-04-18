@@ -93,7 +93,7 @@ static int cmd_x(char *args) {
 	vaddr=expr(arg2,&success);//利用表达式处理地址
   Log("vaddr1:0x%08x\n",vaddr);
 	sscanf(arg2,"%x",&vaddr);//16进制字符串转换为32位无符号数,表示地址
-	Log("vaddr2:0x%08x\n",vaddr);
+//	Log("vaddr2:0x%s\n",*vaddr);
 	printf("Address       Dword block   Byte sequence\n");
 	
 	uint32_t instr;//存放地址vaddr中的内容

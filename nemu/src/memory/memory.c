@@ -9,10 +9,12 @@
 
 uint8_t pmem[PMEM_SIZE];
 
+
 /* Memory accessing interfaces */
 
 uint32_t paddr_read(paddr_t addr, int len) {
-  return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
+ printf("pmem u:%p  d:%p u+len:%p",pmem,pmem,pmem+len);
+ return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
 }
 
 void paddr_write(paddr_t addr, int len, uint32_t data) {
