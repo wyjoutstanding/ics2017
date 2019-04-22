@@ -259,7 +259,7 @@ make_DHelper(a2O) {
   decode_op_a(eip, id_src, true);
   decode_op_O(eip, id_dest, false);
 }
-
+//J:CALL指令的译码实现，根据手册和函数体中的功能提示
 make_DHelper(J) {
   decode_op_SI(eip, id_dest, false);
   // the target address can be computed in the decode stage
