@@ -144,13 +144,14 @@ static inline void rtl_push(const rtlreg_t* src1) {
   // M[esp] <- src1
   //TODO();
 	reg_l(4) -= 4;
-	vaddr_write((uint32_t)&reg_l(4),4,*src1);
+	vaddr_write(reg_l(4),4,*src1);
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
   // esp <- esp + 4
-  TODO();
+  *dest = vaddr_read(reg_l(4),4);
+	reg_l(4) += 4;
 }
 
 static inline void rtl_eq0(rtlreg_t* dest, const rtlreg_t* src1) {
