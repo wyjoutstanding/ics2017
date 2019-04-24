@@ -93,7 +93,7 @@ opcode_entry opcode_table [512] = {
   /* 0x48 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x4c */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x50 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x54 */	EMPTY, IDEXW(push_SI,push,0), EMPTY, EMPTY,
+  /* 0x54 */	EMPTY, IDEX(push_SI,push), EMPTY, EMPTY,
   /* 0x58 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x5c */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x60 */	EMPTY, EMPTY, EMPTY, EMPTY,
@@ -218,7 +218,9 @@ make_EHelper(real) {
   printf("eip2:%08x  opcode:%02x\n",*eip,opcode);
  	decoding.opcode = opcode;
   set_width(opcode_table[opcode].width);
+	printf("width:%u\n",opcode_table[opcode].width);
   idex(eip, &opcode_table[opcode]);
+	printf("idex eip:%08x\n",*eip);
 }
 
 static inline void update_eip(void) {
