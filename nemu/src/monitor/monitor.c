@@ -82,7 +82,15 @@ static inline void load_img() {
 static inline void restart() {
   /* Set the initial instruction pointer. */
   cpu.eip = ENTRY_START;
-
+  cpu.EFLAGS.CF = 0;//eflag initial
+	cpu.EFLAGS.X1 = 1;
+  cpu.EFLAGS.ZF = 0;
+  cpu.EFLAGS.SF = 0;
+	cpu.EFLAGS.X2 = 0;
+  cpu.EFLAGS.IF = 0;
+	cpu.EFLAGS.X3 = 0;
+  cpu.EFLAGS.OF = 0;
+  cpu.EFLAGS.X4 = 0;
 #ifdef DIFF_TEST
   init_qemu_reg();
 #endif
