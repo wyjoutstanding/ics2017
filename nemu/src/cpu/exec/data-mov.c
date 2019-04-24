@@ -4,9 +4,9 @@ make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
-
+//push's execute function
 make_EHelper(push) {
-  rtl_push(&reg_l(5));//ebp入栈
+  rtl_push(&reg_l(5));//ebp入栈,esp<-ebp,only consider dword (uint32_t)
 
   print_asm_template1(push);
 }
