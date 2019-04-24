@@ -215,7 +215,8 @@ static make_EHelper(2byte_esc) {
 make_EHelper(real) {
 	printf("eip1:%08x\n",*eip);
   uint32_t opcode = instr_fetch(eip, 1);
-  decoding.opcode = opcode;
+  printf("eip2:%08x  opcode:%02x\n",*eip,opcode);
+ 	decoding.opcode = opcode;
   set_width(opcode_table[opcode].width);
   idex(eip, &opcode_table[opcode]);
 }
