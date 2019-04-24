@@ -6,7 +6,7 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  TODO();
+  rtl_push(&reg_l(5));//ebp入栈
 
   print_asm_template1(push);
 }
