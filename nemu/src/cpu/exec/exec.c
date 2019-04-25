@@ -220,9 +220,9 @@ make_EHelper(real) {
   printf("eip2:%08x  opcode:%02x\n",*eip,opcode);
  	decoding.opcode = opcode;
   set_width(opcode_table[opcode].width);
-	printf("width:%u\n",opcode_table[opcode].width);
+	printf("set_width eip:%08x\n",*eip);
   idex(eip, &opcode_table[opcode]);
-	printf("idex eip:%08x\n",*eip);
+	printf("idex is over eip:%08x\n",*eip);
 }
 
 static inline void update_eip(void) {
