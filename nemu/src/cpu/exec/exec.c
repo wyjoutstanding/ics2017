@@ -28,6 +28,7 @@ static inline void idex(vaddr_t *eip, opcode_entry *e) {
     e->decode(eip);
 	printf("idex decode is over : eip:%08x\n",*eip);
   e->execute(eip);
+	printf("execute is over! eip:%08x\n",*eip);
 }
 
 static make_EHelper(2byte_esc);
