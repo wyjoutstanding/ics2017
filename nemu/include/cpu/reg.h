@@ -35,19 +35,21 @@ typedef struct {
 
  };
   vaddr_t eip;
-  struct{
-		uint32_t CF:1;
-		uint32_t X1:1;
-		uint32_t X2:4;
-		uint32_t ZF:1;
-		uint32_t SF:1;
-		uint32_t X3:1;
-		uint32_t IF:1;
-		uint32_t X4:1;
-		uint32_t OF:1;
-		uint32_t X5:20;
+  union {
+	  uint32_t val;//easy to assign in restart 
+    struct {
+			uint32_t CF:1;
+			uint32_t X1:1;
+			uint32_t X2:4;
+			uint32_t ZF:1;
+			uint32_t SF:1;
+			uint32_t X3:1;
+			uint32_t IF:1;
+			uint32_t X4:1;
+			uint32_t OF:1;
+			uint32_t X5:20;
+		};
 	}EFLAGS;//标志位，位域实现
-
 } CPU_state;
 
 extern CPU_state cpu;
