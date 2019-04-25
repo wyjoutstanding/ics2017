@@ -199,6 +199,7 @@ make_DHelper(test_I) {
 }
 
 make_DHelper(SI2E) {
+	printf("start SI2E eip:%08x\n",*eip);
   assert(id_dest->width == 2 || id_dest->width == 4);
   decode_op_rm(eip, id_dest, true, NULL, false);
   id_src->width = 1;
