@@ -27,7 +27,7 @@ static inline void idex(vaddr_t *eip, opcode_entry *e) {
 	if (e->decode)
     e->decode(eip);
 	printf("idex decode is over : eip:%08x\n",*eip);
-  e->execute(eip);
+  e->execute(eip);printf("what's matter!\n");
 	printf("execute is over! eip:%08x\n",*eip);
 }
 
