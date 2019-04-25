@@ -23,12 +23,12 @@ static inline void set_width(int width) {
 /* Instruction Decode and EXecute */
 static inline void idex(vaddr_t *eip, opcode_entry *e) {
   /* eip is pointing to the byte next to opcode */
-  printf("idex before docede:%08x\n",*eip);
+  //printf("idex before docede:%08x\n",*eip);
 	if (e->decode)
     e->decode(eip);
-	printf("idex decode is over : eip:%08x\n",*eip);
-  e->execute(eip);printf("what's matter!\n");
-	printf("execute is over! eip:%08x\n",*eip);
+//	printf("idex decode is over : eip:%08x\n",*eip);
+  e->execute(eip);//printf("what's matter!\n");
+	//printf("execute is over! eip:%08x\n",*eip);
 }
 
 static make_EHelper(2byte_esc);
