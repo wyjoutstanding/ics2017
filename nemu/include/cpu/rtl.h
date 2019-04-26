@@ -242,5 +242,12 @@ static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
   rtl_update_ZF(result, width);
   rtl_update_SF(result, width);
 }
-
+//bug negative ??
+static inline void rtl_update_OF(const rtlreg_t* s1,const rtlreg_t* s2,const rtlreg_t* result){
+	rtl_msb(&t1,s1,4);
+	rtl_msb(&t2,s2,4);
+	rtl_msb(&t3,result,4);
+	t0 = !((t1 == t2) && (t1 == t3));
+	rtl_set_OF(&t0);
+}
 #endif
