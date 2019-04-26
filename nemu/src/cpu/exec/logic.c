@@ -14,6 +14,8 @@ make_EHelper(and) {
 
 make_EHelper(xor) {
 //  TODO();
+  if((&cpu.eax) == (&id_dest->val))
+  printf("dest type:%d\n",id_dest->type);
   rtl_xor(&id_dest->val,&id_dest->val,&id_src->val);
 	rtl_update_ZFSF(&id_dest->val,id_dest->width);
 	rtl_set_OF(&tzero);
