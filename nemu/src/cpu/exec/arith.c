@@ -7,9 +7,12 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-	printf("1 dest:%u src:%u\n",id_dest->val,id_src->val);
+//	printf("1 dest:%u src:%u\n",id_dest->val,id_src->val);
+  rtl_mv(&t0,&id_dest->val);
   rtl_sub(&id_dest->val,&id_dest->val,&id_src->val);//dest=src-src2
-  printf("2dest:%u\n",id_dest->val);
+//  printf("2dest:%u\n",id_dest->val);
+  rtl_update_ZFSF(&id_dest->val,id_dest->width);
+	rtl_update_OF(&id_src->val,&t0,&id_dest->val);//bug and CF is empty
   print_asm_template2(sub);
 }
 
