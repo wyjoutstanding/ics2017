@@ -6,14 +6,14 @@ make_EHelper(mov) {
 }
 //push's execute function
 make_EHelper(push) {
-  rtl_push(&reg_l(5));//ebp入栈,esp<-ebp,only consider dword (uint32_t)
+  rtl_push(&reg_l(R_EBP));//ebp入栈,esp<-ebp,only consider dword (uint32_t)
 
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
-  TODO();
-
+//  TODO();
+  rtl_pop(&reg_l(R_EBP));
   print_asm_template1(pop);
 }
 
