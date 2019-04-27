@@ -217,14 +217,14 @@ static make_EHelper(2byte_esc) {
 }
 
 make_EHelper(real) {
-	printf("eip1:%08x\n",*eip);
+//	printf("eip1:%08x\n",*eip);
   uint32_t opcode = instr_fetch(eip, 1);
-  printf("eip2:%08x  opcode:%02x\n",*eip,opcode);
+//  printf("eip2:%08x  opcode:%02x\n",*eip,opcode);
  	decoding.opcode = opcode;
   set_width(opcode_table[opcode].width);
-	printf("set_width eip:%08x\n",*eip);
+//	printf("set_width eip:%08x\n",*eip);
   idex(eip, &opcode_table[opcode]);
-	printf("idex is over eip:%08x\n",*eip);
+//	printf("idex is over eip:%08x\n",*eip);
 }
 
 static inline void update_eip(void) {
