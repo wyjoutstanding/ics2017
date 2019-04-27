@@ -15,7 +15,7 @@ make_EHelper(and) {
 make_EHelper(xor) {
 //  TODO();
 //  if((&cpu.eax) == (&id_dest->val))
-  printf("dest type:%d dest_val:%u src_val:%u\n",id_dest->type,id_dest->val,id_src->val);
+//  printf("dest type:%d dest_val:%u src_val:%u\n",id_dest->type,id_dest->val,id_src->val);
   rtl_xor(&t0,&id_dest->val,&id_src->val);
 	rtl_sr(id_dest->reg,id_dest->width,&t0);//写入寄存器
 	rtl_update_ZFSF(&id_dest->val,id_dest->width);
