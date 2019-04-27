@@ -37,7 +37,7 @@ make_EHelper(neg) {
 
   print_asm_template1(neg);
 }
-
+//add involve OF,CF,ZF,SF
 make_EHelper(adc) {
   rtl_add(&t2, &id_dest->val, &id_src->val);
   rtl_sltu(&t3, &t2, &id_dest->val);
@@ -60,7 +60,7 @@ make_EHelper(adc) {
 
   print_asm_template2(adc);
 }
-
+//sub consider OF,CF,ZF,SF
 make_EHelper(sbb) {
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_sltu(&t3, &id_dest->val, &t2);
