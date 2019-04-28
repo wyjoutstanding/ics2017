@@ -6,8 +6,8 @@ make_EHelper(mov) {
 }
 //push's execute function
 make_EHelper(push) {
-  rtl_push(&reg_l(id_dest->reg));//ebp入栈,esp<-ebp,only consider dword (uint32_t)
-
+ // rtl_push(&reg_l(id_dest->reg));//ebp入栈,esp<-ebp,only consider dword (uint32_t)
+  rtl_push(&id_dest->val);
   print_asm_template1(push);
 }
 
