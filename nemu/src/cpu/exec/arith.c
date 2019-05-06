@@ -1,8 +1,9 @@
 #include "cpu/exec.h"
 
+void exec_adc(vaddr_t*);
 make_EHelper(add) {
-  TODO();
-
+//  TODO();
+  exec_adc(eip);//deal with flags
   print_asm_template2(add);
 }
 void exec_sbb(vaddr_t* );
