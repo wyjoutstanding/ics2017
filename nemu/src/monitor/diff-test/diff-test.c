@@ -163,7 +163,7 @@ void difftest_step(uint32_t eip) {
 		printf("diff-test: ebx is error!");
 		diff = true;
 	} else if(r.esp != cpu.esp){
-		printf("diff-test: esp is error!");
+		printf("diff-test: esp is error! cpu.esp:%08x  r.esp:%08x\n",cpu.esp,r.esp);
 		diff = true;
 	} else if(r.ebp != cpu.ebp){
 		printf("diff-test: ebp is error!");
