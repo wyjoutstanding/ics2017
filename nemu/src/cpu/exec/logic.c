@@ -9,7 +9,8 @@ make_EHelper(test) {
 make_EHelper(and) {
  // TODO();
   rtl_sext(&id_src->val,&id_src->val,id_src->width);//signed extent imm
-	rtl_and(&id_dest->val,&id_dest->val,&id_src->val);
+	rtl_and(&t1,&id_dest->val,&id_src->val);
+	operand_write(id_dest,&t1);//write into register/memory
 	rtl_set_CF(&t0);
 	rtl_set_OF(&t0);
   print_asm_template2(and);
