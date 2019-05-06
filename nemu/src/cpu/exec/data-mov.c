@@ -21,8 +21,8 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-  TODO();
-
+//  TODO();
+  rtl_push(&id_dest->val);
   print_asm("pusha");
 }
 
