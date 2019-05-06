@@ -3,7 +3,8 @@
 void exec_adc(vaddr_t*);
 make_EHelper(add) {
 //  TODO();
-  exec_adc(eip);//deal with flags
+  rtl_sext(&id_dest->val,&id_src->val,id_dest->width);//扩展
+	exec_adc(eip);//deal with flags
   print_asm_template2(add);
 }
 void exec_sbb(vaddr_t* );
