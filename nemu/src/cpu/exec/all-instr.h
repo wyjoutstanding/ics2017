@@ -15,4 +15,13 @@ make_EHelper(pop);
 make_EHelper(ret);
 
 make_EHelper(lea);//frame is done
-make_EHelper(add);//call adc
+
+make_EHelper(add);
+make_EHelper(or);//call adc
+make_EHelper(adc);
+make_EHelper(sbb);
+make_EHelper(and);
+make_EHelper(sub);
+make_EHelper(xor);
+make_EHelper(cmp);
+
