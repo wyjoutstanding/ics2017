@@ -31,5 +31,5 @@ make_EHelper(dec);//call adc
 make_EHelper(call_rm);
 make_EHelper(jmp);
 make_EHelper(jmp_rm);
-//make_EHelper(push);
+make_EHelper(pusha);
 
