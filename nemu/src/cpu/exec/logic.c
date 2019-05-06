@@ -11,8 +11,10 @@ make_EHelper(and) {
   rtl_sext(&id_src->val,&id_src->val,id_src->width);//signed extent imm
 	rtl_and(&t1,&id_dest->val,&id_src->val);
 	operand_write(id_dest,&t1);//write into register/memory
+	//flag affected
 	rtl_set_CF(&t0);
 	rtl_set_OF(&t0);
+	rtl_update_ZFSF(&t1,id_dest->width);
   print_asm_template2(and);
 }
 
