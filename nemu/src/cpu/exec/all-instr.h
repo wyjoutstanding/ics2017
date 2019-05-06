@@ -15,3 +15,4 @@ make_EHelper(pop);
 make_EHelper(ret);
 
 make_EHelper(lea);//frame is done
+make_EHelper(add);//call adc
