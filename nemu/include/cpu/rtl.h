@@ -151,6 +151,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 //	 tmp >>= (4-width)*8-1;//11..00
 //	 *dest = *src1 | tmp;
 // }
+ printf("rtl_sext\n");
  if(width == 4) return;
  rtl_li(&t0,0xffffffff);
  rtl_shri(&t0,&t0,(4-width)*8);
