@@ -3,9 +3,9 @@
 void exec_adc(vaddr_t*);
 make_EHelper(add) {
 //  TODO();
-  printf("add: dest:%08x src:%08x dest_width:%d src_w:%d",id_dest->val,id_src->val,id_dest->width,id_src->width);
+//  printf("add: dest:%08x src:%08x dest_width:%d src_w:%d",id_dest->val,id_src->val,id_dest->width,id_src->width);
   rtl_sext(&id_src->val,&id_src->val,id_dest->width);//扩展
-	printf("sext src_val:%08x\n",id_src->val);
+//	printf("sext src_val:%08x\n",id_src->val);
 	exec_adc(eip);//deal with flags
   print_asm_template2(add);
 }
@@ -13,8 +13,8 @@ void exec_sbb(vaddr_t* );
 make_EHelper(sub) {
 //	printf("1 dest:%u src:%u\n",id_dest->val,id_src->val);
 //  rtl_sub(&id_dest->val,&id_dest->val,&id_src->val);//dest=src-src2
-  printf("2dest:%u\n",id_dest->val);
-  exec_sbb(eip);
+  rtl_sext(&id_src->val,&id_src->val,id_dest->width);
+	exec_sbb(eip);
 	print_asm_template2(sub);
 }
 
@@ -43,7 +43,6 @@ make_EHelper(neg) {
 }
 //add involve OF,CF,ZF,SF
 make_EHelper(adc) {
-	printf("adc is ok!\n");
   rtl_add(&t2, &id_dest->val, &id_src->val);
   rtl_sltu(&t3, &t2, &id_dest->val);
   rtl_get_CF(&t1);
