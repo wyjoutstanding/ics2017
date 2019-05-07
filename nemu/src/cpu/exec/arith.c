@@ -6,6 +6,7 @@ make_EHelper(add) {
   printf("add: dest:%08x src:%08x dest_width:%d src_w:%d",id_dest->val,id_src->val,id_dest->width,id_src->width);
   rtl_sext(&id_src->val,&id_src->val,id_dest->width);//扩展
 	printf("sext src_val:%08x\n",id_src->val);
+	assert(id_src->width == 1);
 	exec_adc(eip);//deal with flags
   print_asm_template2(add);
 }
