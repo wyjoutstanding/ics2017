@@ -164,6 +164,8 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 	 rtl_sari(&t2,&t2,(4-width)*8);
 	 rtl_or(dest,&t2,src1);
  }
+ printf("rtl_sext dval:%08x width:%d\n",*src1,width);
+ 
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
