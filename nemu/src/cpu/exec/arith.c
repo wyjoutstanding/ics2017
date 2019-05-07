@@ -13,7 +13,7 @@ void exec_sbb(vaddr_t* );
 make_EHelper(sub) {
 //	printf("1 dest:%u src:%u\n",id_dest->val,id_src->val);
 //  rtl_sub(&id_dest->val,&id_dest->val,&id_src->val);//dest=src-src2
-//  printf("2dest:%u\n",id_dest->val);
+  printf("2dest:%u\n",id_dest->val);
   exec_sbb(eip);
 	print_asm_template2(sub);
 }

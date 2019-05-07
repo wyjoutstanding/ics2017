@@ -2,7 +2,6 @@
 
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
-  printf("exec_mov\n");
  	print_asm_template2(mov);
 }
 //push's execute function
