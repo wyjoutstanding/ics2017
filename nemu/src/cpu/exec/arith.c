@@ -43,6 +43,7 @@ make_EHelper(neg) {
 }
 //add involve OF,CF,ZF,SF
 make_EHelper(adc) {
+	printf("adc is ok!\n");
   rtl_add(&t2, &id_dest->val, &id_src->val);
   rtl_sltu(&t3, &t2, &id_dest->val);
   rtl_get_CF(&t1);
