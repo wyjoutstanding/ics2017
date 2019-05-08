@@ -228,6 +228,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
 	rtl_and(&t0,&t0,result);
 	t0 = !t0;
 	rtl_set_ZF(&t0);
+	Log("result:%08x w:%d ZF:%d  ",*result,width,t0);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
@@ -239,6 +240,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
 	rtl_shri(&t0,&t0,width*8-1);
 	rtl_addi(&t0,&t0,0x1);
   rtl_set_SF(&t0);
+	Log("result:%08x w:%d SF:%d  ",*result,width,t0);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
