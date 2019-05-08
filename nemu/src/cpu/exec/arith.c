@@ -1,13 +1,28 @@
 #include "cpu/exec.h"
 
-void exec_adc(vaddr_t*);
+//void exec_adc(vaddr_t*);
 make_EHelper(add) {
 //  TODO();
 //  printf("add: dest:%08x src:%08x dest_width:%d src_w:%d",id_dest->val,id_src->val,id_dest->width,id_src->width);
   rtl_sext(&id_src->val,&id_src->val,id_dest->width);//扩展
 //	printf("sext src_val:%08x\n",id_src->val);
-	exec_adc(eip);//deal with flags
-  print_asm_template2(add);
+//	exec_adc(eip);//deal with flags
+  rtl_add(&t0,&id_dest->val,&id_src->val);
+  operand_write(id_dest,&t0);
+
+	rtl_update_ZFSF(&t0,id_dest->width);
+
+	rtl_sltu(&t2,&t0,&id_dest->val);
+	rtl_set_CF(&t2);
+
+	rtl_xor(&t1,&id_dest->val,&id_src->val);
+	rtl_not(&t1);
+	rtl_xor(&t2,&id_dest->val,&t0);
+  rtl_and(&t1,&t1,&t2);
+	rtl_msb(&t1,&t1,id_dest->width);
+	rtl_set_OF(&t1);
+
+	print_asm_template2(add);
 }
 //void exec_sbb(vaddr_t* );
 make_EHelper(sub) {
