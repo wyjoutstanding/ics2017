@@ -77,7 +77,7 @@ make_EHelper(adc) {
 
   print_asm_template2(adc);
 }
-//sub consider OF,CF,ZF,SF
+//sub consider borrow and affected OF,CF,ZF,SF
 make_EHelper(sbb) {
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   //operand_write(id_dest,&t2);//test
