@@ -83,4 +83,5 @@ make_EHelper(xchg) {
   rtl_li(&t0,id_dest->val);//read dest
 	operand_write(id_dest,&id_src->val);//dest<-src
 	operand_write(id_src,&t0);//src<-dest
+  print_asm_template2(xchg);
 }
