@@ -35,12 +35,13 @@ make_EHelper(xor) {
 
 make_EHelper(or) {
 //  TODO();
-  rtl_or(&t0,&id_dest->val,&id_src->val);
-	operand_write(id_dest,&t0);
+  uint32_t t;
+  rtl_or(&t,&id_dest->val,&id_src->val);
+	operand_write(id_dest,&t);
 
+	rtl_update_ZFSF(&t,id_dest->width);
 	rtl_set_OF(&tzero);
 	rtl_set_CF(&tzero);
-	rtl_update_ZFSF(&t0,id_dest->width);
 
   print_asm_template2(or);
 }
