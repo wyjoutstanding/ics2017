@@ -257,7 +257,7 @@ void exec_wrapper(bool print_flag) {
   update_eip();
 
 #ifdef DIFF_TEST
-	printf("diff eip:%08x\n",eip);
+//	printf("diff eip:%08x\n",eip);
   void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
