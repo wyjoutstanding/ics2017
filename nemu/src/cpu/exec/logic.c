@@ -22,11 +22,12 @@ make_EHelper(xor) {
 //  TODO();
 //  if((&cpu.eax) == (&id_dest->val))
 //  printf("dest type:%d dest_val:%u src_val:%u\n",id_dest->type,id_dest->val,id_src->val);
-  rtl_xor(&t0,&id_dest->val,&id_src->val);
+  uint32_t t;//to avoid collipse with update
+	rtl_xor(&t,&id_dest->val,&id_src->val);
 	//rtl_sr(id_dest->reg,id_dest->width,&t0);//写入寄存器
-	operand_write(id_dest,&t0);
+	operand_write(id_dest,&t);
 
-	rtl_update_ZFSF(&t0,id_dest->width);
+	rtl_update_ZFSF(&t,id_dest->width);
 	rtl_set_OF(&tzero);
 	rtl_set_CF(&tzero);
   print_asm_template2(xor);
