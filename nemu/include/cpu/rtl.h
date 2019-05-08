@@ -224,9 +224,13 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
 	//t0 >>= (4-width)*8 - 1;
 	//t0 = !(t0 & *result);
   rtl_li(&t0,0xffffffff);
+	Log("t0:%08x\n",t0);
 	rtl_shri(&t0,&t0,(4-width)*8);
-	rtl_and(&t0,&t0,result);
+	Log("t0:%08x\n",t0);
+  rtl_and(&t0,&t0,result);
+	Log("t0:%08x\n",t0);
 	t0 = !t0;
+	Log("t0:%08x\n",t0);
 	rtl_set_ZF(&t0);
 	Log("result:%08x w:%d ZF:%d  ",*result,width,t0);
 }
