@@ -35,3 +35,6 @@ make_EHelper(pusha);
 
 //make_EHelper(xchg);
 make_EHelper(nop);
+
+//make_EHelper(2byte_esc);
+make_EHelper(setcc);
