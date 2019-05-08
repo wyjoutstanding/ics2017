@@ -33,4 +33,5 @@ make_EHelper(jmp);
 make_EHelper(jmp_rm);
 make_EHelper(pusha);
 
-make_EHelper(xchg);
+//make_EHelper(xchg);
+make_EHelper(nop);
