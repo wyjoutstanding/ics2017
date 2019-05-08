@@ -238,7 +238,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
 //	t &= 0x00000001;
 	rtl_mv(&t0,result);
 	rtl_shri(&t0,&t0,width*8-1);
-	rtl_addi(&t0,&t0,0x1);
+	rtl_andi(&t0,&t0,0x1);//don't write addi
   rtl_set_SF(&t0);
 	Log("result:%08x w:%d SF:%d  ",*result,width,t0);
 }
