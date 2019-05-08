@@ -23,15 +23,23 @@ make_EHelper(xor) {
 //  if((&cpu.eax) == (&id_dest->val))
 //  printf("dest type:%d dest_val:%u src_val:%u\n",id_dest->type,id_dest->val,id_src->val);
   rtl_xor(&t0,&id_dest->val,&id_src->val);
-	rtl_sr(id_dest->reg,id_dest->width,&t0);//写入寄存器
-	rtl_update_ZFSF(&id_dest->val,id_dest->width);
+	//rtl_sr(id_dest->reg,id_dest->width,&t0);//写入寄存器
+	operand_write(id_dest,&t0);
+
+	rtl_update_ZFSF(&t0,id_dest->width);
 	rtl_set_OF(&tzero);
 	rtl_set_CF(&tzero);
   print_asm_template2(xor);
 }
 
 make_EHelper(or) {
-  TODO();
+//  TODO();
+  rtl_or(&t0,&id_dest->val,&id_src->val);
+	operand_write(id_dest,&t0);
+
+	rtl_set_OF(&tzero);
+	rtl_set_CF(&tzero);
+	rtl_update_ZFSF(&t0,id_dest->width);
 
   print_asm_template2(or);
 }
