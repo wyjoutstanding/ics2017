@@ -228,8 +228,8 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
 	rtl_shri(&t0,&t0,(4-width)*8);
 	Log("t0:%08x\n",t0);
   //rtl_and(&t0,&t0,result);
-	t0 = t0 & *result;
-	Log("t0:%08x\n",t0);
+	t0 = t0 & (*result);
+	Log("t0:%08x  result:%08x\n",t0,*result);
 	t0 = !t0;
 	Log("t0:%08x\n",t0);
 	rtl_set_ZF(&t0);
