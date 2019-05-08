@@ -39,11 +39,11 @@ static inline make_DopHelper(SI) {
    op->simm = ???
    */
 //	printf("decode.c SI eip1:%08x\n",*eip);
-  op->simm = (int32_t)instr_fetch(eip,op->width);
+  op->imm = instr_fetch(eip,op->width);
  // TODO();
 //  printf("decode.c SI eip2:%08x width:%u op->simm:%d\n",*eip,op->width,op->simm);
-  Log("op->simm:%08x w:%d\n",op->simm,op->width);
-	rtl_sext((void*)&op->simm,(void*)&op->simm,op->width);//sign extension
+  Log("op->imm:%08x w:%d\n",op->imm,op->width);
+	rtl_sext(&op->imm,&op->imm,op->width);//sign extension
 	rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
