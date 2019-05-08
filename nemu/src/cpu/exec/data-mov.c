@@ -78,3 +78,9 @@ make_EHelper(lea) {
   operand_write(id_dest, &t2);
   print_asm_template2(lea);
 }
+//change two r/m
+make_EHelper(xchg) {
+  rtl_li(&t0,id_dest->val);//read dest
+	operand_write(id_dest,&id_src->val);//dest<-src
+	operand_write(id_src,&t0);//src<-dest
+}
