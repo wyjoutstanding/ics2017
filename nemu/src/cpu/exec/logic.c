@@ -13,11 +13,13 @@ make_EHelper(test) {
 make_EHelper(and) {
  // TODO();
   rtl_sext(&id_src->val,&id_src->val,id_src->width);//signed extent imm
+	Log("dest:%08x  src:%08x\n",id_dest->val,id_src->val);
 	rtl_and(&t1,&id_dest->val,&id_src->val);
+	Log("t1:%08x\n",t1);
 	operand_write(id_dest,&t1);//write into register/memory
 	//flag affected
-	rtl_set_CF(&t0);
-	rtl_set_OF(&t0);
+	rtl_set_CF(&tzero);
+	rtl_set_OF(&tzero);
 	rtl_update_ZFSF(&t1,id_dest->width);
   print_asm_template2(and);
 }
@@ -91,7 +93,10 @@ make_EHelper(setcc) {
 }
 
 make_EHelper(not) {
-  TODO();
-
+//  TODO();
+  rtl_mv(&t3,&id_dest->val);
+	rtl_not(&t3);
+	operand_write(id_dest,&t3);
+  
   print_asm_template1(not);
 }
