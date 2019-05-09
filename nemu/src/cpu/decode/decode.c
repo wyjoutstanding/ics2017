@@ -44,8 +44,8 @@ static inline make_DopHelper(SI) {
 //  printf("decode.c SI eip2:%08x width:%u op->simm:%d\n",*eip,op->width,op->simm);
 //  Log("op->imm:%08x w:%d\n",op->imm,op->width);
 //	rtl_sext(&op->imm,&op->imm,op->width);//sign extension
-  rtl_sext(&op->imm,&op->imm,id_dest->width);
-	Log("imm:%x\n imm8:%08x",op->imm,op->imm);
+  rtl_sext(&op->imm,&op->imm,id_dest->width);//先全部当成无符号处理
+//	Log("imm:%x\n imm8:%08x",op->imm,op->imm);
   rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
