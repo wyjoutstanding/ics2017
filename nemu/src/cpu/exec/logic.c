@@ -12,6 +12,7 @@ make_EHelper(test) {
 
 make_EHelper(and) {
  // TODO();
+ 	Log("dest:%08x  src:%08x\n",id_dest->val,id_src->val);
   rtl_sext(&id_src->val,&id_src->val,id_src->width);//signed extent imm
 	Log("dest:%08x  src:%08x\n",id_dest->val,id_src->val);
 	rtl_and(&t1,&id_dest->val,&id_src->val);
