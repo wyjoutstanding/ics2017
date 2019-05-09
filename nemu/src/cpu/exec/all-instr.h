@@ -50,3 +50,8 @@ make_EHelper(neg);
 make_EHelper(not);
 
 make_EHelper(jmp);
+
+make_EHelper(imul);
+make_EHelper(mul);
+make_EHelper(div);
+make_EHelper(idiv);
