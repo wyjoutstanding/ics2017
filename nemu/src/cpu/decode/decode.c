@@ -116,7 +116,7 @@ static inline make_DopHelper(O) {
  * Ev <- Gv
  */
 make_DHelper(G2E) {
-	Log("dest:%0x  src:%0x type1:%d type2:%d\n",id_dest->val,id_src->val,id_dest->type,id_src->type);
+//	Log("dest:%0x  src:%0x type1:%d type2:%d\n",id_dest->val,id_src->val,id_dest->type,id_src->type);
   decode_op_rm(eip, id_dest, true, id_src, true);
 }
 
