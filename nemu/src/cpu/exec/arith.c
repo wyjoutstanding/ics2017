@@ -47,8 +47,23 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  TODO();
+//  TODO();
+  rtl_sext(&id_src->val,&id_src->val,id_dest->width);
+	//exec_sbb(eip);sub 与 sbb的区别
+	rtl_sub(&t3,&id_dest->val,&id_src->val);
+//	operand_write(id_dest,&t3);
 
+	rtl_update_ZFSF(&t3,id_dest->width);
+
+	rtl_sltu(&t0,&id_dest->val,&t3);
+	rtl_set_CF(&t0);
+
+	rtl_xor(&t0,&id_dest->val,&id_src->val);
+	rtl_xor(&t1,&id_dest->val,&t3);
+	rtl_and(&t0,&t0,&t1);
+	rtl_msb(&t0,&t0,id_dest->width);
+	rtl_set_OF(&t0);
+	
   print_asm_template2(cmp);
 }
 
