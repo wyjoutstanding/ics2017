@@ -317,3 +317,10 @@ void operand_write(Operand *op, rtlreg_t* src) {
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }
   else { assert(0); }
 }
+//mov Gv <- Eb
+make_DHelper(mov_Eb2Gv) {
+	assert(id_dest->width == 2 || id_dest->width == 4);
+	id_src->width = 1;//binary
+  decode_op_rm(eip,id_src,true,id_dest,false);
+}
+
