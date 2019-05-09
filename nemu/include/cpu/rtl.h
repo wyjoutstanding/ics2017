@@ -151,7 +151,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 //	 tmp >>= (4-width)*8-1;//11..00
 //	 *dest = *src1 | tmp;
 // }
- Log("rtl_sext1 dval:%08x width:%d\n",*src1,width);
+// Log("rtl_sext1 dval:%08x width:%d\n",*src1,width);
  if(width == 4) return;
  rtl_li(&t0,0xffffffff);
  rtl_shri(&t0,&t0,(4-width)*8);
@@ -164,7 +164,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 	 rtl_sari(&t2,&t2,(4-width)*8);
 	 rtl_or(dest,&t2,src1);
  }
- Log("rtl_sext2 dval:%08x width:%d\n",*src1,width);
+// Log("rtl_sext2 dval:%08x width:%d\n",*src1,width);
  
 }
 
