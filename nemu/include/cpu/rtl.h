@@ -155,9 +155,9 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
  if(width == 4) return;
  rtl_li(&t0,0xffffffff);
  rtl_shri(&t0,&t0,(4-width)*8);
- Log("t0:%08x\n",t0);
+// Log("t0:%08x\n",t0);
  rtl_msb(&t1,src1,width);
- Log("t1:%x\n",t1);
+// Log("t1:%x\n",t1);
 	if(t1 == 0) {
 	 rtl_and(&t0,&t0,src1);
 	 
