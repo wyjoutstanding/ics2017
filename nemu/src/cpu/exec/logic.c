@@ -13,9 +13,9 @@ make_EHelper(test) {
 make_EHelper(and) {
  // TODO();
  	Log("dest:%08x  src:%08x\n",id_dest->val,id_src->val);
-  rtl_sext(&id_src->val,&id_src->val,id_src->width);//signed extent imm
-	Log("dest:%08x  src:%08x\n",id_dest->val,id_src->val);
-	rtl_and(&t1,&id_dest->val,&id_src->val);
+  rtl_sext(&t3,&id_src->val,id_src->width);//signed extent imm
+	Log("dest:%08x  src:%08x\n",id_dest->val,t3);
+	rtl_and(&t1,&id_dest->val,&t3);
 	Log("t1:%08x\n",t1);
 	operand_write(id_dest,&t1);//write into register/memory
 	//flag affected
