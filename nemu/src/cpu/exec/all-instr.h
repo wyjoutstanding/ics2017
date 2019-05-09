@@ -48,3 +48,5 @@ make_EHelper(inc);
 make_EHelper(dec);
 make_EHelper(neg);
 make_EHelper(not);
+
+make_EHelper(jmp);
