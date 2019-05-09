@@ -160,7 +160,9 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
  Log("t1:%x\n",t1);
 	if(t1 == 0) {
 	 rtl_and(&t0,&t0,src1);
-   rtl_mv(dest,&t0);
+	 
+  Log("t0:%08x\n",t0);
+  rtl_mv(dest,&t0);
  } else {
 	 rtl_li(&t2,0x80000000);
 	 rtl_sari(&t2,&t2,(4-width)*8);
@@ -210,11 +212,12 @@ static inline void rtl_neq0(rtlreg_t* dest, const rtlreg_t* src1) {
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
   //TODO();
-	rtl_mv(&t0,src1);
+	uint32_t t;
+	rtl_mv(&t,src1);
 	//t0 = *src1;
-	rtl_shri(&t0,&t0,width*8 - 1);
-	rtl_andi(&t0,&t0,0x1);
-	rtl_mv(dest,&t0);
+	rtl_shri(&t,&t,width*8 - 1);
+	rtl_andi(&t,&t,0x1);
+	rtl_mv(dest,&t);
 	//t0 = (t0 >> (width*8-1)) & 0x1;
 	//*dest = t0;
 }
