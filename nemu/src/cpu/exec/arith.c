@@ -7,17 +7,17 @@ make_EHelper(add) {
   rtl_sext(&id_src->val,&id_src->val,id_dest->width);//扩展
 //	printf("sext src_val:%08x\n",id_src->val);
 //	exec_adc(eip);//deal with flags
-  rtl_add(&t0,&id_dest->val,&id_src->val);
-  operand_write(id_dest,&t0);
+  rtl_add(&t3,&id_dest->val,&id_src->val);
+  operand_write(id_dest,&t3);
 
-	rtl_update_ZFSF(&t0,id_dest->width);
+	rtl_update_ZFSF(&t3,id_dest->width);
 
-	rtl_sltu(&t2,&t0,&id_dest->val);
+	rtl_sltu(&t2,&t3,&id_dest->val);
 	rtl_set_CF(&t2);
 
 	rtl_xor(&t1,&id_dest->val,&id_src->val);
 	rtl_not(&t1);
-	rtl_xor(&t2,&id_dest->val,&t0);
+	rtl_xor(&t2,&id_dest->val,&t3);
   rtl_and(&t1,&t1,&t2);
 	rtl_msb(&t1,&t1,id_dest->width);
 	rtl_set_OF(&t1);
@@ -30,16 +30,16 @@ make_EHelper(sub) {
 //  rtl_sub(&id_dest->val,&id_dest->val,&id_src->val);//dest=src-src2
   rtl_sext(&id_src->val,&id_src->val,id_dest->width);
 	//exec_sbb(eip);sub 与 sbb的区别
-	rtl_sub(&t2,&id_dest->val,&id_src->val);
-	operand_write(id_dest,&t2);
+	rtl_sub(&t3,&id_dest->val,&id_src->val);
+	operand_write(id_dest,&t3);
 
-	rtl_update_ZFSF(&t2,id_dest->width);
+	rtl_update_ZFSF(&t3,id_dest->width);
 
-	rtl_sltu(&t0,&id_dest->val,&t2);
+	rtl_sltu(&t0,&id_dest->val,&t3);
 	rtl_set_CF(&t0);
 
 	rtl_xor(&t0,&id_dest->val,&id_src->val);
-	rtl_xor(&t1,&id_dest->val,&t2);
+	rtl_xor(&t1,&id_dest->val,&t3);
 	rtl_and(&t0,&t0,&t1);
 	rtl_msb(&t0,&t0,id_dest->width);
 	rtl_set_OF(&t0);
