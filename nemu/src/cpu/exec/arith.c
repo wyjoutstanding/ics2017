@@ -4,7 +4,7 @@
 make_EHelper(add) {
 //  TODO();
 //  printf("add: dest:%08x src:%08x dest_width:%d src_w:%d",id_dest->val,id_src->val,id_dest->width,id_src->width);
-  rtl_sext(&id_src->val,&id_src->val,id_dest->width);//扩展
+  rtl_sext(&id_src->val,&id_src->val,id_src->width);//扩展
 //	printf("sext src_val:%08x\n",id_src->val);
 //	exec_adc(eip);//deal with flags
   rtl_add(&t3,&id_dest->val,&id_src->val);
@@ -28,7 +28,7 @@ make_EHelper(add) {
 make_EHelper(sub) {
 //	printf("1 dest:%u src:%u\n",id_dest->val,id_src->val);
 //  rtl_sub(&id_dest->val,&id_dest->val,&id_src->val);//dest=src-src2
-  rtl_sext(&id_src->val,&id_src->val,id_dest->width);
+  rtl_sext(&id_src->val,&id_src->val,id_src->width);
 	//exec_sbb(eip);sub 与 sbb的区别
 	rtl_sub(&t3,&id_dest->val,&id_src->val);
 	operand_write(id_dest,&t3);
@@ -48,7 +48,7 @@ make_EHelper(sub) {
 
 make_EHelper(cmp) {
 //  TODO();
-  rtl_sext(&id_src->val,&id_src->val,id_dest->width);
+  rtl_sext(&id_src->val,&id_src->val,id_src->width);//传入src_width，而不是dest_width
 	Log("cmp src:%08x\n",id_src->val);
 	//exec_sbb(eip);sub 与 sbb的区别
 	rtl_sub(&t3,&id_dest->val,&id_src->val);
