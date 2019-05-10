@@ -61,3 +61,5 @@ make_EHelper(idiv);
 
 make_EHelper(cltd);
 make_EHelper(cwtl);
+
+make_EHelper(leave);
