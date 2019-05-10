@@ -330,4 +330,14 @@ make_DHelper(mov_Eb2Gv) {
 	
 	decode_op_rm(eip,id_src,true,id_dest,false);
 }
-
+//mov Gv <- Ew
+make_DHelper(mov_Ew2Gv) {
+	assert(id_dest->width == 2 || id_dest->width == 4);
+	id_src->width = 2;//word
+	//zero extend
+	rtl_li(&t0,(id_dest->width-1)*8);
+  rtl_shl(&t1,&id_src->val,&t0);
+  rtl_shr(&id_dest->val,&t1,&t0);
+	
+	decode_op_rm(eip,id_src,true,id_dest,false);
+}
