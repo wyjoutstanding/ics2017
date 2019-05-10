@@ -154,7 +154,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 // Log("rtl_sext1 dval:%08x width:%d\n",*src1,width);
  uint32_t w = 4; 
  if(width == w) return;
- if(w == 4) rtl_li(&t0,0xffffffff);
+ if(width == 4) rtl_li(&t0,0xffffffff);
  else rtl_li(&t0,0xffff);
  rtl_shri(&t0,&t0,(w-width)*8);
 // Log("t0:%08x\n",t0);
@@ -166,7 +166,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   Log("t0:%08x\n",t0);
   rtl_mv(dest,&t0);
  } else {
-	 if(w == 4) rtl_li(&t2,0x80000000);
+	 if(width == 4) rtl_li(&t2,0x80000000);
 	 else rtl_li(&t2,0x8000);
 	 rtl_sari(&t2,&t2,(w-width)*8);
 	 rtl_or(dest,&t2,src1);
