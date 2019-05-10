@@ -113,4 +113,5 @@ make_DHelper(out_a2I);
 make_DHelper(out_a2dx);
 
 make_DHelper(mov_Eb2Gv);
+make_DHelper(mov_Ew2Gv);
 #endif
