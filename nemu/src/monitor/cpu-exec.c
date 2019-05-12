@@ -29,7 +29,7 @@ void cpu_exec(uint64_t n) {
      * instruction decode, and the actual execution. */
     uint32_t old_eip = cpu.eip;
 	 	exec_wrapper(print_flag);
-
+    old_eip = old_eip;//仅仅是为了消除注释DEBUG后的报错
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
 		WP* wp_trigger[32];
