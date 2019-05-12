@@ -49,7 +49,7 @@ make_EHelper(sub) {
 make_EHelper(cmp) {
 //  TODO();
   rtl_sext(&id_src->val,&id_src->val,id_src->width);//传入src_width，而不是dest_width
-	Log("cmp src:%08x\n",id_src->val);
+//	Log("cmp src:%08x\n",id_src->val);
 	//exec_sbb(eip);sub 与 sbb的区别
 	rtl_sub(&t3,&id_dest->val,&id_src->val);
 //	operand_write(id_dest,&t3);
