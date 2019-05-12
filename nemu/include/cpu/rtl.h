@@ -163,7 +163,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 	if(t1 == 0) {
 	 rtl_and(&t0,&t0,src1);
 	 
-  Log("t0:%08x\n",t0);
+//  Log("t0:%08x\n",t0);
   rtl_mv(dest,&t0);
  } else {
 	 rtl_li(&t2,0x80000000);
