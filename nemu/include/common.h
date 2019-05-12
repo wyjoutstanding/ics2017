@@ -1,8 +1,8 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#define DEBUG
-#define DIFF_TEST//对比测试
+//#define DEBUG
+//#define DIFF_TEST//对比测试
 
 /* You will define this macro in PA2 */
 #define HAS_IOE
