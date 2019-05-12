@@ -6,7 +6,7 @@
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
-#define MAX_INSTR_TO_PRINT 999999//打印步数<16
+#define MAX_INSTR_TO_PRINT 99999999//打印步数<16
 
 int nemu_state = NEMU_STOP;
 
