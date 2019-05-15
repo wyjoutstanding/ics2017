@@ -157,9 +157,9 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
  rtl_li(&t0,0xffffffff);
  //else rtl_li(&t0,0xffff);
  rtl_shri(&t0,&t0,(4-width)*8);
- Log("t0:%08x w:%d\n",t0,width);
+// Log("t0:%08x w:%d\n",t0,width);
  rtl_msb(&t1,src1,width);
- Log("t1:%x w:%d\n",t1,width);
+// Log("t1:%x w:%d\n",t1,width);
 	if(t1 == 0) {
 	 rtl_and(&t0,&t0,src1);
 	 
@@ -170,7 +170,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 	 //else rtl_li(&t2,0x8000);
 	 rtl_sari(&t2,&t2,(4-width)*8);
 	 rtl_or(dest,&t2,src1);
-	 Log("dest:%x src:%x w:%d\n",*dest,*src1,width);
+//	 Log("dest:%x src:%x w:%d\n",*dest,*src1,width);
  }
 // Log("rtl_sext2 dval:%08x width:%d\n",*src1,width);
  
