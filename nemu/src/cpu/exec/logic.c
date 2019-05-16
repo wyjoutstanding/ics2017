@@ -67,11 +67,12 @@ make_EHelper(sar) {
 		case 4: t0 = t0 >> t3; break;
 	}
 */
-	rtl_sext(&t3,&id_dest->val,id_dest->width);//扩展，如0xff
-	rtl_sar(&t3,&t3,&id_src->val);
-	operand_write(id_dest,&t3);
+	uint32_t t = 0;
+	rtl_sext(&t,&id_dest->val,id_dest->width);//扩展，如0xff
+	rtl_sar(&t,&t,&id_src->val);
+	operand_write(id_dest,&t);
 
-	rtl_update_ZFSF(&t3,id_dest->width);
+	rtl_update_ZFSF(&t,id_dest->width);
   print_asm_template2(sar);
 }
 
