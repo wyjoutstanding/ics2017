@@ -57,7 +57,18 @@ make_EHelper(or) {
 make_EHelper(sar) {
  // TODO();
   // unnecessary to update CF and OF in NEMU
-  rtl_sar(&t3,&id_dest->val,&id_src->val);
+//  rtl_mv(&t1,&id_src->width);//width
+/*	t1 = id_src->width;
+	rtl_mv(&t0,&id_dest->val);
+	rtl_mv(&t3,&id_src->val);//disp
+	switch(t1){
+		case 1: (int8_t)t0 = ((int8_t)t0) >> t3; break;
+		case 2: (int16_t)t0 = ((int16_t)t0) >> t3;	break;
+		case 4: t0 = t0 >> t3; break;
+	}
+*/
+	rtl_sext(&t3,&id_dest->val,id_dest->width);//扩展，如0xff
+	rtl_sar(&t3,&t3,&id_src->val);
 	operand_write(id_dest,&t3);
 
 	rtl_update_ZFSF(&t3,id_dest->width);
