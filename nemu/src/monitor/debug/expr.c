@@ -120,8 +120,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+    //    Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+//            i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 				//==========负号处理=========
 				int type = rules[i].token_type;
@@ -173,10 +173,10 @@ static bool make_token(char *e) {
     }
   }
   //Printing tokens to test 
-	for(int j = 0; j < nr_token; j++) {
-		if(tokens[j].str[0] != '\0')Log("type:%d  token:%s",tokens[j].type,tokens[j].str);
-		else Log("type:%d token2:%c",tokens[j].type,tokens[j].type);
-	}	
+//	for(int j = 0; j < nr_token; j++) {
+//		if(tokens[j].str[0] != '\0')Log("type:%d  token:%s",tokens[j].type,tokens[j].str);
+//		else Log("type:%d token2:%c",tokens[j].type,tokens[j].type);
+//	}	
   return true;
 }
 //检查括号匹配合法&&最外层是否有括号:p,q为起止位置
