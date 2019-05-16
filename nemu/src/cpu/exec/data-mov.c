@@ -72,9 +72,9 @@ make_EHelper(cwtl) {
   else {
 //    TODO(); 
     rtl_lr(&t,R_EAX,2);//AX
-		Log("eax:%x t0:%x\n",cpu.eax,t);
+//		Log("eax:%x t0:%x\n",cpu.eax,t);
   	rtl_sext(&t,&t,2);//AX sext to EAX
-		Log("t0:%x\n",t);
+//		Log("t0:%x\n",t);
 	  rtl_sr(R_EAX,4,&t);//EAX <- sext(AX)
 	 }
 
