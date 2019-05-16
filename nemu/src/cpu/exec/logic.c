@@ -69,7 +69,9 @@ make_EHelper(sar) {
 */
 	uint32_t t = 0;
 	rtl_sext(&t,&id_dest->val,id_dest->width);//扩展，如0xff
+	Log("dest:%x w:%d ext:%x src:%d\n",id_dest->val,id_dest->width,t,id_src->val);
 	rtl_sar(&t,&t,&id_src->val);
+  Log("sar_t:%x\n",t);
 	operand_write(id_dest,&t);
 
 	rtl_update_ZFSF(&t,id_dest->width);
