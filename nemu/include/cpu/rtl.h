@@ -153,7 +153,10 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 // }
 // Log("rtl_sext1 dval:%08x width:%d\n",*src1,width);
 // uint32_t w = 4; 
- if(width == 4) return;
+ if(width == 4) {
+	 rtl_mv(dest,src1);
+	 return;
+ }
  rtl_li(&t0,0xffffffff);
  //else rtl_li(&t0,0xffff);
  rtl_shri(&t0,&t0,(4-width)*8);
