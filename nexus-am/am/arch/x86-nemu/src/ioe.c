@@ -46,8 +46,12 @@ void _draw_sync() {
 
 int _read_key() {
   int ret = _KEY_NONE;
+//	printf("status:%d\n",inb(I8042_STATUS_PORT));
 	if(inb(I8042_STATUS_PORT)){//端口开启
 		ret = inl(I8042_DATA_PORT);//获取数据
+//		printf("ret:%d\n",ret);
 	}
+//	assert(ret == 1);
+
 	return ret;
 }
