@@ -7,7 +7,7 @@
  * You can modify this value as you want.
  */
 #define MAX_INSTR_TO_PRINT 99999999//打印步数<16
-
+#define MAX_EXECUTE_STEPS 0xfff//死循环判断
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
@@ -22,7 +22,7 @@ void cpu_exec(uint64_t n) {
   }
   nemu_state = NEMU_RUNNING;
   bool print_flag = n < MAX_INSTR_TO_PRINT;
-
+  uint32_t now_steps = 0;
   for (; n > 0; n --) {
     /*
   	 * Execute one instruction, including instruction fetch,
@@ -30,6 +30,12 @@ void cpu_exec(uint64_t n) {
     uint32_t old_eip = cpu.eip;
 	 	exec_wrapper(print_flag);
     old_eip = old_eip;//仅仅是为了消除注释DEBUG后的报错
+    //执行步数超出限制，报错
+		now_steps++;
+		if(now_steps == MAX_EXECUTE_STEPS){
+			nemu_state = NEMU_STOP;
+			Log("程序陷入死循环，请检查程序！！！\n");
+		}
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
 		WP* wp_trigger[32];
