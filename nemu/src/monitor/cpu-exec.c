@@ -7,7 +7,7 @@
  * You can modify this value as you want.
  */
 #define MAX_INSTR_TO_PRINT 99999999//打印步数<16
-#define MAX_EXECUTE_STEPS 0xfffff//死循环判断
+#define MAX_EXECUTE_STEPS 0xfffffff//死循环判断
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
