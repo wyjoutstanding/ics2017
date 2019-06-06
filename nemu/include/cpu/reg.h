@@ -50,6 +50,13 @@ typedef struct {
 			uint32_t X5:20;
 		};
 	}EFLAGS;//标志位，位域实现
+
+  struct {
+		uint16_t limit;
+		uint32_t base;
+  }IDTR;
+
+	uint32_t CS;
 } CPU_state;
 
 extern CPU_state cpu;
