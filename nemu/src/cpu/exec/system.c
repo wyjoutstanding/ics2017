@@ -34,10 +34,10 @@ make_EHelper(mov_cr2r) {
   diff_test_skip_qemu();
 #endif
 }
-
+void raise_intr(uint8_t, vaddr_t);
 make_EHelper(int) {
-  TODO();
-
+//  TODO();
+	raise_intr((uint8_t)id_src->val,decoding.seq_eip); 	
   print_asm("int %s", id_dest->str);
 
 #ifdef DIFF_TEST
