@@ -14,6 +14,7 @@ static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 //		char s[len]=vaddr_read(buf,len);
 		for(int i = 0; i < len; i++){
 			_putc(((char*)buf)[i]);
+			Log("%c\n",((char*)buf)[i]);
 		}
 	}
   return len;
