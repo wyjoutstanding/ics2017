@@ -6,14 +6,14 @@ void diff_test_skip_nemu();
 make_EHelper(lidt) {
 //  TODO();
 //  rtl_lm((rtlreg_t*)&cpu.IDTR.limit,id_src->addr,2);
-	cpu.IDTR.limit = vaddr_read(id_dest->addr,2);
+	cpu.IDTR.limit = vaddr_read(id_src->addr,2);
 	if(decoding.is_operand_size_16){
-		t3 = vaddr_read(id_dest->addr+2,4);
+		t3 = vaddr_read(id_src->addr+2,4);
 		t3 = t3 & 0x00ffffff;
 		rtl_mv((rtlreg_t*)&cpu.IDTR.base,&t3);
 	}
 	else {
-		cpu.IDTR.base = vaddr_read(id_dest->addr+2,4);
+		cpu.IDTR.base = vaddr_read(id_src->addr+2,4);
 	}
 	 //	rtl_mv((rtlreg_t*)&cpu.IDTR.base,(rtlreg_t*)&(vaddr_read(id_src->addr+2,4)));
   print_asm_template1(lidt);
