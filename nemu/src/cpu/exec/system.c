@@ -7,6 +7,7 @@ make_EHelper(lidt) {
 //  TODO();
 //  rtl_lm((rtlreg_t*)&cpu.IDTR.limit,id_src->addr,2);
 	cpu.IDTR.limit = vaddr_read(id_src->addr,2);
+	Log("limit:%x\n",cpu.IDTR.limit);
 	if(decoding.is_operand_size_16){
 		t3 = vaddr_read(id_src->addr+2,4);
 		t3 = t3 & 0x00ffffff;
@@ -15,6 +16,7 @@ make_EHelper(lidt) {
 	else {
 		cpu.IDTR.base = vaddr_read(id_src->addr+2,4);
 	}
+	Log("base:%x\n",cpu.IDTR.base);
 	 //	rtl_mv((rtlreg_t*)&cpu.IDTR.base,(rtlreg_t*)&(vaddr_read(id_src->addr+2,4)));
   print_asm_template1(lidt);
 }
