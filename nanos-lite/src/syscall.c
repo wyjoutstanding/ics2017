@@ -10,7 +10,8 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 }
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 //  TODO();
-  if(fd == 1 || fd == 2){
+  Log("fd:%d len:%d str:%s\n",fd,len,(char*)buf);
+	if(fd == 1 || fd == 2){
 //		char s[len]=vaddr_read(buf,len);
 		for(int i = 0; i < len; i++){
 			_putc(((char*)buf)[i]);
@@ -58,7 +59,7 @@ _RegSet* do_syscall(_RegSet *r) {
   switch (a[0]) {
     case SYS_none: sys_none(r); break;
 		case SYS_exit: sys_exit(); break;
-		case SYS_write: SYSCALL_ARG1(r) = sys_write(a[1], a[2], a[3]); break;
+		case SYS_write: Log("write");SYSCALL_ARG1(r) = sys_write(a[1], a[2], a[3]); break;
 		default: panic("Unhandled syscall ID = %d", a[0]);
   }
   return NULL;
