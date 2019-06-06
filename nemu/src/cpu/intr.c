@@ -13,12 +13,14 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 		rtl_push((rtlreg_t*)&cpu.eip);
 		//取值
 		base = cpu.IDTR.base;
+		Log("base:%x\n",base);
 		//GDT -> 8B
 		jmp_low = vaddr_read(base+8*NO,4) & 0x0000ffff;
 		jmp_high = vaddr_read(base+8*NO+4,4) & 0xffff0000;
 		jmp = jmp_low | jmp_high;
 		decoding.jmp_eip = jmp;
 		decoding.is_jmp = true;
+		Log("jmp:%x\n",jmp);
 }
 
 void dev_raise_intr() {
