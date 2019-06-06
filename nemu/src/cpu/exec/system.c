@@ -6,15 +6,15 @@ void diff_test_skip_nemu();
 make_EHelper(lidt) {
 //  TODO();
 //  rtl_lm((rtlreg_t*)&cpu.IDTR.limit,id_src->addr,2);
-	cpu.IDTR.limit = vaddr_read(id_src->addr,2);
+	cpu.IDTR.limit = vaddr_read(id_dest->addr,2);
 	Log("limit:%x\n",cpu.IDTR.limit);
 	if(decoding.is_operand_size_16){
-		t3 = vaddr_read(id_src->addr+2,4);
+		t3 = vaddr_read(id_dest->addr+2,4);
 		t3 = t3 & 0x00ffffff;
 		rtl_mv((rtlreg_t*)&cpu.IDTR.base,&t3);
 	}
 	else {
-		cpu.IDTR.base = vaddr_read(id_src->addr+2,4);
+		cpu.IDTR.base = vaddr_read(id_dest->addr+2,4);
 	}
 	Log("base:%x\n",cpu.IDTR.base);
 	 //	rtl_mv((rtlreg_t*)&cpu.IDTR.base,(rtlreg_t*)&(vaddr_read(id_src->addr+2,4)));
@@ -39,7 +39,7 @@ make_EHelper(mov_cr2r) {
 void raise_intr(uint8_t, vaddr_t);
 make_EHelper(int) {
 //  TODO();
-	raise_intr((uint8_t)id_src->val,decoding.seq_eip); 	
+	raise_intr((uint8_t)id_dest->val,decoding.seq_eip); 	
   print_asm("int %s", id_dest->str);
 
 #ifdef DIFF_TEST
