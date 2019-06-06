@@ -10,7 +10,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 		uint32_t base,jmp,jmp_low,jmp_high;
 	  rtl_push((rtlreg_t*)&cpu.EFLAGS);
 		rtl_push((rtlreg_t*)&cpu.CS);
-		rtl_push((rtlreg_t*)&cpu.eip);
+		rtl_push((rtlreg_t*)&ret_addr);//next eip
 		//取值
 		base = cpu.IDTR.base;
 		Log("base:%x\n",base);
