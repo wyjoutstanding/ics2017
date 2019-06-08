@@ -166,9 +166,9 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
  t <<= 32 - width*8;
  t >>= 32 - width*8;
  *dest = t;
-  if(width == 1){
+/*  if(width == 1){
 		Log("w: 1");
-	}
+	}*/
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
