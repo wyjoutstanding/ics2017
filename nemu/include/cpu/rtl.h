@@ -138,22 +138,7 @@ static inline void rtl_not(rtlreg_t* dest) {
 static inline void rtl_msb(rtlreg_t*,const rtlreg_t*,int);
 //符号扩展
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
-  // dest <- signext(src1[(width * 8 - 1) .. 0])
- // TODO();
-// t0 = 0xffffffff;
-// t0 >>= (4-width)*8-1;//0x00..0f..fetch width byte
-// t1 = ((*src1)>>(width*8-1)) & 0x1;//fetch sign
-// if(t1 == 0){//zero extend
-//   *dest = *src1 & t0;
-// }
-// else {//sign extend
-//   int32_t tmp = 0x80000000;
-//	 tmp >>= (4-width)*8-1;//11..00
-//	 *dest = *src1 | tmp;
-// }
-// Log("rtl_sext1 dval:%08x width:%d\n",*src1,width);
-// uint32_t w = 4; 
- if(width == 4) {
+/* if(width == 4) {
 	 rtl_mv(dest,src1);
 	 return;
  }
@@ -176,7 +161,14 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 //	 Log("dest:%x src:%x w:%d\n",*dest,*src1,width);
  }
 // Log("rtl_sext2 dval:%08x width:%d\n",*src1,width);
- 
+ */
+ int32_t t = (int32_t)*src1;
+ t <<= 32 - width*8;
+ t >>= 32 - width*8;
+ *dest = t;
+  if(width == 1){
+		Log("w: 1");
+	}
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
