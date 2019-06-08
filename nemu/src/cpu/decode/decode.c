@@ -44,9 +44,12 @@ static inline make_DopHelper(SI) {
 //  printf("decode.c SI eip2:%08x width:%u op->simm:%d\n",*eip,op->width,op->simm);
 //  Log("op->imm:%08x w:%d\n",op->imm,op->width);
 //	rtl_sext(&op->imm,&op->imm,op->width);//sign extension
-  rtl_sext(&op->imm,&op->imm,op->width);//先全部当成无符号处理,同时传入的是op->width(即将要被扩展的数的宽度，而不仅仅是id_dest)
+//  rtl_sext(&op->imm,&op->imm,op->width);//先全部当成无符号处理,同时传入的是op->width(即将要被扩展的数的宽度，而不仅仅是id_dest)
 //	Log("imm:%x\n imm8:%08x",op->imm,op->imm);
-  rtl_li(&op->val, op->simm);
+  rtl_sext(&op->val,&op->imm,op->width);
+  op->simm = op->val;
+//	rtl_li(&op->simm, op->val);
+//	rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
   snprintf(op->str, OP_STR_SIZE, "$0x%x", op->simm);
