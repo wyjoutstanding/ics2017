@@ -171,7 +171,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
  } else {
 	 rtl_li(&t2,0x80000000);
 	 //else rtl_li(&t2,0x8000);
-	 rtl_sari(&t2,&t2,(4-width)*8);
+	 rtl_sari(&t2,&t2,(4-width)*8-1);
 	 rtl_or(dest,&t2,src1);
 //	 Log("dest:%x src:%x w:%d\n",*dest,*src1,width);
  }
