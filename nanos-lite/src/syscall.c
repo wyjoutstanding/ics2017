@@ -60,12 +60,12 @@ _RegSet* do_syscall(_RegSet *r) {
   switch (a[0]) {
     case SYS_none: ret = sys_none(r); break;
 		case SYS_exit: sys_exit(); break;
-		case SYS_write: Log("sys_write");ret = sys_write(a[1], a[2], a[3]); break;
-		case SYS_brk : Log("brk"); ret = sys_brk(a[2]); break;
-	  case SYS_open: Log("open"); ret = sys_open(a[1], a[2], a[3]); break;
-		case SYS_read: Log("read"); ret = sys_read(a[1], a[2], a[3]); break;
-		case SYS_close: Log("close"); ret = sys_close(a[1]); break;
-		case SYS_lseek: Log("lseek"); ret = sys_lseek(a[1], a[2], a[3]); break;
+		case SYS_write:ret = sys_write(a[1], a[2], a[3]); break;
+		case SYS_brk : ret = sys_brk(a[2]); break;
+	  case SYS_open: ret = sys_open(a[1], a[2], a[3]); break;
+		case SYS_read: ret = sys_read(a[1], a[2], a[3]); break;
+		case SYS_close:ret = sys_close(a[1]); break;
+		case SYS_lseek:ret = sys_lseek(a[1], a[2], a[3]); break;
 		default: panic("Unhandled syscall ID = %d", a[0]);
   }
 	SYSCALL_ARG1(r) = ret;
