@@ -7,7 +7,14 @@ make_EHelper(mov) {
 //push's execute function
 make_EHelper(push) {
  // rtl_push(&reg_l(id_dest->reg));//ebp入栈,esp<-ebp,only consider dword (uint32_t)
-  rtl_sext(&id_dest->val,&id_dest->val,id_dest->width);//push sext
+
+	if (id_dest->width == 1) {
+				  if (decoding.is_operand_size_16)
+									id_dest->width = 2;
+				else
+										id_dest->width = 4;
+							  }
+	rtl_sext(&id_dest->val,&id_dest->val,id_dest->width);//push sext
 	rtl_push(&id_dest->val);//reg/imm/memory
 	print_asm_template1(push);
 }
