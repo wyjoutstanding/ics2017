@@ -11,14 +11,15 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 //  TODO();
 //  Log("fd:%d len:%d str:%s",fd,len,(char*)buf);
-	if(fd == 1 || fd == 2){
+//	if(fd == 1 || fd == 2){
 //		char s[len]=vaddr_read(buf,len);
-		for(int i = 0; i < len; i++){
+/*		for(int i = 0; i < len; i++){
 			_putc(((char*)buf)[i]);
 			Log("%c",((char*)buf)[i]);
 		}
 	}
-  return len;
+  return len;*/
+	return fs_write(fd, (void*)buf, len);
 }
 
 static inline uintptr_t sys_read(uintptr_t fd, uintptr_t buf, uintptr_t len) {
