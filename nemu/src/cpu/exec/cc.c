@@ -14,47 +14,15 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   // TODO: Query EFLAGS to determine whether the condition code is satisfied.
   // dest <- ( cc is satisfied ? 1 : 0)
   switch (subcode & 0xe) {
-    case CC_O:
-			rtl_get_OF(&t0);
-			rtl_eqi(dest,&t0,1);
-			break;
-    case CC_B:
-			rtl_get_CF(&t0);
-			rtl_eqi(dest,&t0,1);
-			break;
-		case CC_E:
-			rtl_get_ZF(&t0);
-			//Log("ZF:%d\n",t0); 
-			//*dest = t0;
-      rtl_eqi(dest,&t0,1);
-		 	break;
-    case CC_BE:
-			rtl_get_CF(&t0);rtl_get_ZF(&t1);
-			rtl_or(&t0,&t0,&t1);//CF=0||ZF=0
-			rtl_eqi(dest,&t0,1);
-			break;
-    case CC_S:
-			rtl_get_SF(&t0);
-			rtl_eqi(dest,&t0,1);
-			break;
-    case CC_L:
-			rtl_get_SF(&t0);rtl_get_OF(&t1);
-			rtl_xor(&t0,&t0,&t1);
-			rtl_eqi(dest,&t0,1);
-      break;
-    case CC_LE:
-			rtl_get_SF(&t0);rtl_get_OF(&t1);
-			rtl_xor(&t0,&t0,&t1);//OF xor SF
-			rtl_eqi(&t0,&t0,1);
-      
-			rtl_get_ZF(&t2);//ZF
-			rtl_or(&t0,&t0,&t2);
-			rtl_eqi(dest,&t0,1);
-			break;
-  
- //     TODO();
-    default: panic("should not reach here");
-    case CC_P: panic("n86 does not have PF");
+    case CC_O:  *dest = cpu.EFLAGS.OF ? 1 : 0; break;
+    case CC_B:  *dest = cpu.EFLAGS.CF ? 1 : 0; break;
+    case CC_E:  *dest = cpu.EFLAGS.ZF ? 1 : 0; break;
+    case CC_BE: *dest = cpu.EFLAGS.CF || cpu.EFLAGS.ZF ? 1 : 0; break;
+    case CC_S:  *dest = cpu.EFLAGS.SF ? 1 : 0; break;
+    case CC_L:  *dest = (cpu.EFLAGS.SF != cpu.EFLAGS.OF) ? 1 : 0; break;
+    case CC_LE: *dest = cpu.EFLAGS.ZF || (cpu.EFLAGS.SF != cpu.EFLAGS.OF) ? 1 : 0; break;
+    default: panic("should not reach here"); break;
+    case CC_P: panic("n86 does not have PF"); break;
   }
 
   if (invert) {
