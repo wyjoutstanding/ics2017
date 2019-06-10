@@ -1,0 +1,8 @@
+*.*
+*
+!*/
+!Makefile
+!README.md
+!.gitignore
+!init.sh
+/navy-apps/fsimg/share/games/pal
