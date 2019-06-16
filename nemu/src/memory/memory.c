@@ -152,7 +152,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 //   }
 // }
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	// if(cpu.cr0.protect_enable && cpu.cr0.paging){
+	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		if( CROSS_PAGE(addr, len)) {//cross page read 
 			assert(0);
 		}
@@ -160,13 +160,13 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			paddr_t paddr = page_translate(addr,false);
       return paddr_read(paddr,len);
 		}
-	// }
+	}
 	
-	// return paddr_read(addr, len);
+	return paddr_read(addr, len);
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-//  if(cpu.cr0.protect_enable && cpu.cr0.paging) {
+ if(cpu.cr0.protect_enable && cpu.cr0.paging) {
 	 if( CROSS_PAGE(addr, len)) {//cross page write
 		 assert(0);
 	 }
@@ -174,6 +174,6 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 		 paddr_t paddr = page_translate(addr,true);
 		 paddr_write(paddr, len, data);
 	 }
-//  }
-//  paddr_write(addr, len, data);
+ }
+ else paddr_write(addr, len, data);//else别漏
 }
