@@ -71,3 +71,6 @@ make_EHelper(rol);
 
 make_EHelper(int);
 make_EHelper(lidt);
+
+make_EHelper(mov_r2cr);
+make_EHelper(mov_cr2r);
