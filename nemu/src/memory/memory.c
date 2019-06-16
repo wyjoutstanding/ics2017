@@ -20,7 +20,7 @@ uint8_t pmem[PMEM_SIZE];
 
 uint32_t paddr_read(paddr_t addr ,int len);
 void paddr_write(paddr_t addr, int len, uint32_t data);
-paddr_t page_translate(vaddr_t vaddr, bool is_write) {	
+paddr_t page_translate(vaddr_t vaddr) {	
 	PDE pd;
 	PTE pb;
   // if ( !cpu.cr0.protect_enable || !cpu.cr0.paging)return vaddr;
@@ -157,11 +157,10 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			assert(0);
 		}
 		else {
-			paddr_t paddr = page_translate(addr,false);
+			paddr_t paddr = page_translate(addr);
       return paddr_read(paddr,len);
 		}
 	}
-	
 	return paddr_read(addr, len);
 }
 
@@ -171,7 +170,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 		 assert(0);
 	 }
 	 else {
-		 paddr_t paddr = page_translate(addr,true);
+		 paddr_t paddr = page_translate(addr);
 		 paddr_write(paddr, len, data);
 	 }
  }
