@@ -156,7 +156,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 //   }
 // }
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	if(cpu.cr0.paging){
+	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page read 
 			assert(0);
 		}
@@ -170,7 +170,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
- if(cpu.cr0.paging) {
+ if(cpu.cr0.protect_enable && cpu.cr0.paging) {
 	 if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page write
 		 assert(0);
 	 }
@@ -179,5 +179,5 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 		 paddr_write(paddr, len, data);
 	 }
  }
- return paddr_write(addr, len, data);
+ paddr_write(addr, len, data);
 }
