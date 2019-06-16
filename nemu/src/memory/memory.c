@@ -26,7 +26,7 @@ paddr_t page_translate(vaddr_t vaddr) {
 
 	paddr_t pd_addr = (cpu.cr3.page_directory_base << 12) |  (((vaddr >> 22) & 0x3ff) << 2);
 	pd.val = paddr_read(pd_addr, 4);//fetch a PageDirectory
-	Log("cr3:0x%08x cr3<<12:0x%08x vaddr:0x%08x vaddr>>22:0x%08x", cpu.cr3.page_directory_base, cpu.cr3.page_directory_base << 12, vaddr, vaddr >> 22); 
+//	Log("cr3:0x%08x cr3<<12:0x%08x vaddr:0x%08x vaddr>>22:0x%08x", cpu.cr3.page_directory_base, cpu.cr3.page_directory_base << 12, vaddr, vaddr >> 22); 
 	assert(pd.present == 1);
 	
 	paddr_t pb_addr = (pd.page_frame << 12) | (((vaddr >> 12) & 0x3ff) << 2);
