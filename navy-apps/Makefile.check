@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-#ISA ?= native
-=======
->>>>>>> 83651ded3a62b242b2a3bbf61fac1b3bed686176
 ISA ?= x86
 ifeq ($(NAVY_HOME), )
   $(error Must set NAVY_HOME environment variable)
