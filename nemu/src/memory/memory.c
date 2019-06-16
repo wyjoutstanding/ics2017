@@ -101,10 +101,6 @@ paddr_t page_translate(vaddr_t addr, bool is_write) {
 }
 
 uint32_t paddr_read(paddr_t addr, int len) {
-// printf("pmem u:%p  addr:%p u+len:%p",pmem,(void*)addr,(void*)(pmem+addr));
-//  uint32_t *vaddr =(uint32_t*)(pmem + addr);//获取指定指令的地址
-//	*vaddr = *vaddr & 0;
-//	printf("vaddr:%08x\n",*vaddr);
   int mmio_id = is_mmio(addr);
 	if(mmio_id != -1)return mmio_read(addr,len,mmio_id) & (~0u >> ((4 - len) << 3));
 	return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
