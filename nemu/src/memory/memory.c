@@ -47,6 +47,7 @@ paddr_t page_translate(vaddr_t vaddr) {
 	}
   
 	paddr_t paddr = (pb.page_frame << 12) | (vaddr & 0xfff);
+  Log("va:0x%u pa:0x%u", vaddr, paddr);
 	return paddr;
 }
 
