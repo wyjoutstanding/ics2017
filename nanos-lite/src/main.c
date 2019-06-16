@@ -1,8 +1,8 @@
 #include "common.h"
 
 /* Uncomment these macros to enable corresponding functionality. */
-#define HAS_ASYE
-//#define HAS_PTE
+#define HAS_ASYE//异常
+#define HAS_PTE//保护机制
 
 void init_mm(void);
 void init_ramdisk(void);

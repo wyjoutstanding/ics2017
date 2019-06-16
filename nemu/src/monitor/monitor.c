@@ -92,6 +92,7 @@ static inline void restart() {
 //  cpu.EFLAGS.OF = 0;
   cpu.EFLAGS.val = 0x2;
 	cpu.CS = 0x8;
+	cpu.cr0.val = 0x60000011;//difftest need
 #ifdef DIFF_TEST
   init_qemu_reg();
 #endif
