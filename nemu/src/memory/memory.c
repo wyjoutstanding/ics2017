@@ -32,7 +32,7 @@ paddr_t page_translate(vaddr_t vaddr) {
 	paddr_t pb_addr = (pd.page_frame << 12) | (((vaddr >> 12) & 0x3ff) << 2);
 	pb.val = paddr_read(pb_addr, 4);//fecth a PageTableEntry
   
-	Log("cr3:0x%08x pd_addr:0x%08x pb_val:0x%08x pb_addr:0x%08x pb_val:0x%08x", cpu.cr3.page_directory_base, pd_addr, pd.val, pb_addr, pb.val);
+//	Log("cr3:0x%08x pd_addr:0x%08x pb_val:0x%08x pb_addr:0x%08x pb_val:0x%08x", cpu.cr3.page_directory_base, pd_addr, pd.val, pb_addr, pb.val);
 	assert(pb.present == 1);	
   //tell os both levels are used;replacement algorithm
 	if(pd.accessed == 0){
