@@ -50,7 +50,7 @@ paddr_t page_translate(vaddr_t vaddr) {
 	}
   
 	paddr_t paddr = (pb.page_frame << 12) | (vaddr & 0xfff);
-  Log("va:0x%08x pa:0x%08x", vaddr, paddr);
+  // Log("va:0x%08x pa:0x%08x", vaddr, paddr);
 	return paddr;
 
   // PDE pde, *pgdir;
