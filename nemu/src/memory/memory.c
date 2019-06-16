@@ -71,7 +71,7 @@ paddr_t page_translate(vaddr_t addr) {
     // Log("va:0x%08x pa:0x%08x",addr, paddr);
    
     paddr = (pte.page_frame << 12) | (addr & PAGE_MASK);
-	Log("va:0x%08x pa:0x%08x",addr, paddr);
+	Log("va1:0x%08x pa1:0x%08x",addr, paddr);
   }
 
   return paddr;
