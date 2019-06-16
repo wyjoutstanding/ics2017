@@ -118,66 +118,66 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 
  #define CROSS_PAGE(addr, len) \
    ((((addr) + (len) - 1) & ~PAGE_MASK) != ((addr) & ~PAGE_MASK))
-// uint32_t vaddr_read(vaddr_t addr, int len) {
-//   paddr_t paddr;
-
-//   if (CROSS_PAGE(addr, len)) {
-//     /* data cross the page boundary */
-//     union {
-//       uint8_t bytes[4];
-//       uint32_t dword;
-//     } data = {0};
-//     for (int i = 0; i < len; i++) {
-//       paddr = page_translate(addr + i, false);
-//       data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
-//     }
-//     return data.dword;
-//   } else {
-//     paddr = page_translate(addr, false);
-//     return paddr_read(paddr, len);
-//   }
-// }
-
-// void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-//   paddr_t paddr;
-
-//   if (CROSS_PAGE(addr, len)) {
-//     /* data cross the page boundary */
-//     assert(0);
-//     for (int i = 0; i < len; i++) {
-//       paddr = page_translate(addr, true);
-//       paddr_write(paddr, 1, data);
-//       data >>= 8;
-//       addr++;
-//     }
-//   } else {
-//     paddr = page_translate(addr, true);
-//     paddr_write(paddr, len, data);
-//   }
-// }
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	if(cpu.cr0.paging){
-		if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page read 
-			assert(0);
-		}
-		else {
-			paddr_t paddr = page_translate(addr,false);
-      return paddr_read(paddr,len);
-		}
-	}
-	
-	return paddr_read(addr, len);
+  paddr_t paddr;
+
+  if (CROSS_PAGE(addr, len)) {
+    /* data cross the page boundary */
+    union {
+      uint8_t bytes[4];
+      uint32_t dword;
+    } data = {0};
+    for (int i = 0; i < len; i++) {
+      paddr = page_translate(addr + i, false);
+      data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
+    }
+    return data.dword;
+  } else {
+    paddr = page_translate(addr, false);
+    return paddr_read(paddr, len);
+  }
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
- if(cpu.cr0.paging) {
-	 if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page write
-		 assert(0);
-	 }
-	 else {
-		 paddr_t paddr = page_translate(addr,true);
-		 paddr_write(paddr, len, data);
-	 }
- }
- return paddr_write(addr, len, data);
+  paddr_t paddr;
+
+  if (CROSS_PAGE(addr, len)) {
+    /* data cross the page boundary */
+    assert(0);
+    for (int i = 0; i < len; i++) {
+      paddr = page_translate(addr, true);
+      paddr_write(paddr, 1, data);
+      data >>= 8;
+      addr++;
+    }
+  } else {
+    paddr = page_translate(addr, true);
+    paddr_write(paddr, len, data);
+  }
 }
+// uint32_t vaddr_read(vaddr_t addr, int len) {
+// 	if(cpu.cr0.paging){
+// 		if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page read 
+// 			assert(0);
+// 		}
+// 		else {
+// 			paddr_t paddr = page_translate(addr);
+//       return paddr_read(paddr,len);
+// 		}
+// 	}
+	
+// 	return paddr_read(addr, len);
+// }
+
+// void vaddr_write(vaddr_t addr, int len, uint32_t data) {
+//  if(cpu.cr0.paging) {
+// 	 if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page write
+// 		 assert(0);
+// 	 }
+// 	 else {
+// 		 paddr_t paddr = page_translate(addr);
+// 		 paddr_write(paddr, len, data);
+// 	 }
+//  }
+//  return paddr_write(addr, len, data);
+// }
