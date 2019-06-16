@@ -177,7 +177,11 @@ void difftest_step(uint32_t eip) {
 	} else if(r.eip != cpu.eip){
   	  printf("diff-test: eip is error! cpu.eip:%08x  r.eip:%08x\n",cpu.eip,r.eip);
 	  	diff = true;
-	}
+	}/* else if(r.cr0 != cpu.cr0){
+		Log("Q-cr0:0x%08x N-cr0:0x%08x",r.cr0, cpu.cr0);
+	} else if(r.cr3 != cpu.cr3){
+		Log("Q-cr3:0x%08x N-cr3:0x%08x",r.cr3, cpu.cr3);
+	}*/
 
   if (diff) {
 		Log("eip:%x\n",cpu.eip);
