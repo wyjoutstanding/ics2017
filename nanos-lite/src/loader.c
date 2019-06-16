@@ -18,16 +18,19 @@ uintptr_t loader(_Protect *as, const char *filename) {
   fs_read(fd, DEFAULT_ENTRY, fs_filesz(fd));
 	fs_close(fd);
 */  
+  Log("start");
 	int fd = fs_open(filename, 0, 0);
 	uint32_t file_size = fs_filesz(fd);
 	int nr_page = 0;
+	void* pa, *va = as->ptr;
 	while(nr_page * PAGE_SIZE < file_size) {
-		void* pa = new_page();
+		pa = new_page();
 		assert(pa != NULL);
 		nr_page++;
-		void* va = as->ptr;
+		
     Log("Map va to pa: 0x%08x to 0x%08x", va, pa);
 		_map(as, va, pa);
+	  va += PAGE_SIZE;
 		fs_read(fd, pa, PAGE_SIZE);
 	}
 	fs_close(fd);
