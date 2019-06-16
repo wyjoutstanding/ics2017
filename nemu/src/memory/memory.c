@@ -116,8 +116,8 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 	else	memcpy(guest_to_host(addr), &data, len);
 }
 
-// #define CROSS_PAGE(addr, len) 
-//   ((((addr) + (len) - 1) & ~PAGE_MASK) != ((addr) & ~PAGE_MASK))
+ #define CROSS_PAGE(addr, len) \
+   ((((addr) + (len) - 1) & ~PAGE_MASK) != ((addr) & ~PAGE_MASK))
 // uint32_t vaddr_read(vaddr_t addr, int len) {
 //   paddr_t paddr;
 
@@ -157,7 +157,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 // }
 uint32_t vaddr_read(vaddr_t addr, int len) {
 	if(cpu.cr0.paging){
-		if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page read 
+		if( CROSS_PAGE(addr, len)) {//cross page read 
 			assert(0);
 		}
 		else {
@@ -171,7 +171,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
  if(cpu.cr0.paging) {
-	 if( len > PAGE_SIZE - (addr & 0xfff) + 1) {//cross page write
+	 if( CROSS_PAGE(addr, len)) {//cross page write
 		 assert(0);
 	 }
 	 else {
