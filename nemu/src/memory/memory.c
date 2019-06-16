@@ -23,7 +23,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data);
 paddr_t page_translate(vaddr_t vaddr, bool is_write) {	
 	PDE pd;
 	PTE pb;
-  if ( !cpu.cr0.protect_enable || !cpu.cr0.paging)return vaddr;
+  // if ( !cpu.cr0.protect_enable || !cpu.cr0.paging)return vaddr;
 	paddr_t pd_addr = (cpu.cr3.page_directory_base << 12) |  (((vaddr >> 22) & 0x3ff) << 2);
 	pd.val = paddr_read(pd_addr, 4);//fetch a PageDirectory
 //	Log("cr3:0x%08x cr3<<12:0x%08x vaddr:0x%08x vaddr>>22:0x%08x", cpu.cr3.page_directory_base, cpu.cr3.page_directory_base << 12, vaddr, vaddr >> 22); 
