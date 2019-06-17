@@ -1,6 +1,9 @@
 #include "nemu.h"
 #include "device/mmio.h"
 
+#include "memory/mmu.h"//self add
+paddr_t page_translate(vaddr_t vaddr);
+
 #define PMEM_SIZE (128 * 1024 * 1024)
 
 #define pmem_rw(addr, type) *(type *)({\
@@ -12,87 +15,65 @@ uint8_t pmem[PMEM_SIZE];
 
 /* Memory accessing interfaces */
 
+static inline int my_is_mmio(paddr_t addr) {
+  return (addr >= 0x40000 && addr < 0xC0000) ? 0 : -1;
+}
+
 uint32_t paddr_read(paddr_t addr, int len) {
-  int map_NO = is_mmio(addr);
-  if(map_NO != -1)
-	  return mmio_read(addr, len, map_NO);
-  else
-	  return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
+  int i = is_mmio(addr);
+  // int i = my_is_mmio(addr);
+  if (i == -1)
+    return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
+  return mmio_read(addr, len, i) & (~0u >> ((4 - len) << 3));
 }
 
 void paddr_write(paddr_t addr, int len, uint32_t data) {
-  int map_NO = is_mmio(addr);
-  if(map_NO != -1)
-	  mmio_write(addr, len, data, map_NO);
+  int i = is_mmio(addr);
+  // int i = my_is_mmio(addr);
+  if (i == -1)
+    memcpy(guest_to_host(addr), &data, len);
   else
-	  memcpy(guest_to_host(addr), &data, len);
+    mmio_write(addr, len, data, i);
 }
-
-paddr_t page_translate(vaddr_t addr, bool is_write) {
-	PDE pde, *pgdir;
-	PTE pte, *pgtab;
-	paddr_t paddr = addr;
-
-    if (cpu.cr0.protect_enable && cpu.cr0.paging) {
-	    pgdir = (PDE *)(intptr_t)(cpu.cr3.page_directory_base << 12);
-	    pde.val = paddr_read((intptr_t)&pgdir[(addr >> 22) & 0x3ff], 4);
-	    assert(pde.present);
-	    pde.accessed = 1;
-
-	    pgtab = (PTE *)(intptr_t)(pde.page_frame << 12);
-	    pte.val = paddr_read((intptr_t)&pgtab[(addr >> 12) & 0x3ff], 4);
-	    assert(pte.present);
-	    pte.accessed = 1;
-	    pte.dirty = is_write ? 1 : pte.dirty;
-
-	    paddr = (pte.page_frame << 12) | (addr & PAGE_MASK);
-	}
-
-	return paddr;
-}
-
-#define CROSS_PAGE(addr, len) \
-	((((addr) + (len) - 1) & ~PAGE_MASK) != ((addr) & ~PAGE_MASK))
-
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
-  // return paddr_read(addr, len);
-    paddr_t paddr;
+  if (((addr & 0xfff) + len) > 0x1000) {
+    uint8_t temp[8];
+    uint32_t temp_offset = addr & 3;
+    
+    paddr_t paddr = page_translate(addr);
+    *(uint32_t *)(temp + temp_offset) = paddr_read(paddr, 4 - temp_offset);
 
-    if (CROSS_PAGE(addr, len)) {
-	    /* data cross the page boundary */
-	//    union {
-	//		uint8_t bytes[4];
-	//		uint32_t dword;
-	//	  } data = {0};
-	//	for (int i = 0; i < len; i++) {
-	//	    paddr = page_translate(addr + i, false);
-	//	    data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
-	//	}
-	//  return data.dword;
-	assert(0);
-    } else {
-		paddr = page_translate(addr, false);
-	    return paddr_read(paddr, len);
-	}
+    paddr = page_translate((addr & ~0xfff) + 0x1000);
+    *(uint32_t *)(temp + 4) = paddr_read(paddr, len + temp_offset - 4);
+
+    return (*(uint32_t *)(temp + temp_offset)) & (~0u >> ((4 - len) << 3));
+  }
+  return paddr_read(page_translate(addr), len);
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-  //paddr_write(addr, len, data);
-  paddr_t paddr;
+  if (((addr & 0xfff) + len) > 0x1000)
+    assert(0);
+  paddr_write(page_translate(addr), len, data);
+}
 
-	if (CROSS_PAGE(addr, len)) {
-		/* data cross the page boundary */
-	//	assert(0);
-	//    for (int i = 0; i < len; i++) {
-	//      paddr = page_translate(addr, true);
-	//      paddr_write(paddr, 1, data);
-	//      data >>= 8;
-	//      addr++;
-	//    }
-		assert(0);
-	} else {
-	      paddr = page_translate(addr, true);
-	      paddr_write(paddr, len, data);
-    }
+#define PDX(va)     (((uint32_t)(va) >> 22) & 0x3ff)
+#define PTX(va)     (((uint32_t)(va) >> 12) & 0x3ff)
+#define OFF(va)     ((uint32_t)(va) & 0xfff)
+
+paddr_t page_translate(vaddr_t vaddr) {
+  if (cpu.cr0.paging == 0)
+    return vaddr;
+
+  uint32_t pdb = cpu.cr3.page_directory_base;
+  uint32_t tmp = PDX(vaddr);
+  uint32_t PDE_page_frame = paddr_read((pdb << 12) + (tmp << 2), 4);
+  assert(PDE_page_frame & 0x1);
+
+  tmp = PTX(vaddr);
+  uint32_t PTE_page_frame = paddr_read((PDE_page_frame & 0xfffff000) + (tmp << 2), 4);
+  assert(PTE_page_frame & 0x1);
+
+  return (PTE_page_frame & 0xfffff000) + OFF(vaddr);
 }
