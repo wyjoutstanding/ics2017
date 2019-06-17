@@ -1,10 +1,12 @@
 #include "nemu.h"
-#include "device/mmio.h"
 
 #include "memory/mmu.h"//self add
-paddr_t page_translate(vaddr_t vaddr);
 
 #define PMEM_SIZE (128 * 1024 * 1024)
+
+int is_mmio(paddr_t);
+uint32_t mmio_read(paddr_t, int, int);
+void mmio_write(paddr_t, int, uint32_t, int);
 
 #define pmem_rw(addr, type) *(type *)({\
     Assert(addr < PMEM_SIZE, "physical address(0x%08x) is out of bound", addr); \
@@ -13,67 +15,165 @@ paddr_t page_translate(vaddr_t vaddr);
 
 uint8_t pmem[PMEM_SIZE];
 
+
 /* Memory accessing interfaces */
 
-static inline int my_is_mmio(paddr_t addr) {
-  return (addr >= 0x40000 && addr < 0xC0000) ? 0 : -1;
+uint32_t paddr_read(paddr_t addr ,int len);
+void paddr_write(paddr_t addr, int len, uint32_t data);
+// paddr_t page_translate(vaddr_t vaddr) {	
+// 	PDE pd;
+// 	PTE pb;
+//   // if ( !cpu.cr0.protect_enable || !cpu.cr0.paging)return vaddr;
+// 	paddr_t pd_addr = (cpu.cr3.page_directory_base << 12) |  (((vaddr >> 22) & 0x3ff) << 2);
+// 	pd.val = paddr_read(pd_addr, 4);//fetch a PageDirectory
+// 	// Log("cr3:0x%08x cr3<<12:0x%08x vaddr:0x%08x vaddr>>22:0x%08x", cpu.cr3.page_directory_base, cpu.cr3.page_directory_base << 12, vaddr, vaddr >> 22); 
+// 	assert(pd.present == 1);
+	
+// 	paddr_t pb_addr = (pd.page_frame << 12) | (((vaddr >> 12) & 0x3ff) << 2);
+// 	pb.val = paddr_read(pb_addr, 4);//fecth a PageTableEntry
+  
+// 	// Log("pd_addr:0x%08x pd_val:0x%08x pb_addr:0x%08x pb_val:0x%08x",pd_addr, pd.val, pb_addr, pb.val);
+// 	// Log("pb_addr:0x%08x pb_val:0x%08x pb_addr:0x%08x pb_val:0x%08x",pd_addr, pd.val, pb_addr, pb.val);
+// 	assert(pb.present == 1);	
+//   //tell os both levels are used;replacement algorithm
+// 	if(pd.accessed == 0){
+// 		pd.accessed = 1;
+// 		paddr_write(pd_addr, 4, pd.val);
+// 	}
+// 	if(pb.accessed == 0) {
+// 	  pb.accessed = 1;
+// 	  paddr_write(pb_addr, 4, pb.val);
+// 	}
+// 	//writeback
+//   if(pb.dirty == 0 && pb.read_write == 1) {
+// 		pb.dirty = 1;
+// 		paddr_write(pb_addr, 4, pb.val);
+// 	}
+  
+// 	paddr_t paddr = (pb.page_frame << 12) | (vaddr & 0xfff);
+//   // Log("va:0x%08x pa:0x%08x", vaddr, paddr);
+// 	return paddr;
+
+//   // PDE pde, *pgdir;
+//   // PTE pte, *pgtab;
+//   // paddr_t paddr = addr;
+
+//   // if (cpu.cr0.protect_enable && cpu.cr0.paging) {
+//   //   pgdir = (PDE *)(intptr_t)(cpu.cr3.page_directory_base << 12);
+//   //   pde.val = paddr_read((intptr_t)&pgdir[(addr >> 22) & 0x3ff], 4);
+//   //   Assert(pde.present, "Page dir not valid: va 0x%x eip: 0x%x", addr, cpu.eip);
+//   //   pde.accessed = 1;
+
+//   //   pgtab = (PTE *)(intptr_t)(pde.page_frame << 12);
+//   //   pte.val = paddr_read((intptr_t)&pgtab[(addr >> 12) & 0x3ff], 4);
+//   //   Assert(pte.present, "Page dir not valid: va 0x%x", addr);
+//   //   pte.accessed = 1;
+//   //   pte.dirty = pte.read_write ? 1 : pte.dirty;
+//   //   // Log("va:0x%08x pa:0x%08x",addr, paddr);
+   
+//   //   paddr = (pte.page_frame << 12) | (addr & PAGE_MASK);
+// 	// // Log("va:0x%08x pa:0x%08x",addr, paddr);
+//   // }
+
+//   // return paddr;
+// }
+
+paddr_t page_translate(vaddr_t addr, bool is_write) {
+  PDE pde, *pgdir;
+  PTE pte, *pgtab;
+  paddr_t paddr = addr;
+
+  if (cpu.cr0.protect_enable && cpu.cr0.paging) {
+    pgdir = (PDE *)(intptr_t)(cpu.cr3.page_directory_base << 12);
+    pde.val = paddr_read((intptr_t)&pgdir[(addr >> 22) & 0x3ff], 4);
+    Assert(pde.present, "Page dir not valid: va 0x%x eip: 0x%x", addr, cpu.eip);
+    pde.accessed = 1;
+
+    pgtab = (PTE *)(intptr_t)(pde.page_frame << 12);
+    pte.val = paddr_read((intptr_t)&pgtab[(addr >> 12) & 0x3ff], 4);
+    Assert(pte.present, "Page dir not valid: va 0x%x", addr);
+    pte.accessed = 1;
+    pte.dirty = is_write ? 1 : pte.dirty;
+
+    paddr = (pte.page_frame << 12) | (addr & PAGE_MASK);
+  }
+
+  return paddr;
 }
 
 uint32_t paddr_read(paddr_t addr, int len) {
-  int i = is_mmio(addr);
-  // int i = my_is_mmio(addr);
-  if (i == -1)
-    return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
-  return mmio_read(addr, len, i) & (~0u >> ((4 - len) << 3));
+  int mmio_id = is_mmio(addr);
+	if(mmio_id != -1)return mmio_read(addr,len,mmio_id) & (~0u >> ((4 - len) << 3));
+	return pmem_rw(addr, uint32_t) & (~0u >> ((4 - len) << 3));
 }
 
 void paddr_write(paddr_t addr, int len, uint32_t data) {
-  int i = is_mmio(addr);
-  // int i = my_is_mmio(addr);
-  if (i == -1)
-    memcpy(guest_to_host(addr), &data, len);
-  else
-    mmio_write(addr, len, data, i);
+  int mmio_id = is_mmio(addr);
+	if(mmio_id != -1)mmio_write(addr,len,data,mmio_id);
+	else	memcpy(guest_to_host(addr), &data, len);
 }
 
+ #define CROSS_PAGE(addr, len) \
+   ((((addr) + (len) - 1) & ~PAGE_MASK) != ((addr) & ~PAGE_MASK))
 uint32_t vaddr_read(vaddr_t addr, int len) {
-  if (((addr & 0xfff) + len) > 0x1000) {
-    uint8_t temp[8];
-    uint32_t temp_offset = addr & 3;
-    
-    paddr_t paddr = page_translate(addr);
-    *(uint32_t *)(temp + temp_offset) = paddr_read(paddr, 4 - temp_offset);
+  paddr_t paddr;
 
-    paddr = page_translate((addr & ~0xfff) + 0x1000);
-    *(uint32_t *)(temp + 4) = paddr_read(paddr, len + temp_offset - 4);
-
-    return (*(uint32_t *)(temp + temp_offset)) & (~0u >> ((4 - len) << 3));
+  if (CROSS_PAGE(addr, len)) {
+    /* data cross the page boundary */
+    union {
+      uint8_t bytes[4];
+      uint32_t dword;
+    } data = {0};
+    for (int i = 0; i < len; i++) {
+      paddr = page_translate(addr + i, false);
+      data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
+    }
+    return data.dword;
+  } else {
+    paddr = page_translate(addr, false);
+    return paddr_read(paddr, len);
   }
-  return paddr_read(page_translate(addr), len);
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-  if (((addr & 0xfff) + len) > 0x1000)
+  paddr_t paddr;
+
+  if (CROSS_PAGE(addr, len)) {
+    /* data cross the page boundary */
     assert(0);
-  paddr_write(page_translate(addr), len, data);
+    for (int i = 0; i < len; i++) {
+      paddr = page_translate(addr, true);
+      paddr_write(paddr, 1, data);
+      data >>= 8;
+      addr++;
+    }
+  } else {
+    paddr = page_translate(addr, true);
+    paddr_write(paddr, len, data);
+  }
 }
+// uint32_t vaddr_read(vaddr_t addr, int len) {
+// 	if(cpu.cr0.protect_enable && cpu.cr0.paging){
+// 		if( CROSS_PAGE(addr, len)) {//cross page read 
+// 			assert(0);
+// 		}
+// 		else {
+// 			paddr_t paddr = page_translate(addr);
+//       return paddr_read(paddr,len);
+// 		}
+// 	}
+// 	return paddr_read(addr, len);
+// }
 
-#define PDX(va)     (((uint32_t)(va) >> 22) & 0x3ff)
-#define PTX(va)     (((uint32_t)(va) >> 12) & 0x3ff)
-#define OFF(va)     ((uint32_t)(va) & 0xfff)
-
-paddr_t page_translate(vaddr_t vaddr) {
-  if (cpu.cr0.paging == 0)
-    return vaddr;
-
-  uint32_t pdb = cpu.cr3.page_directory_base;
-  uint32_t tmp = PDX(vaddr);
-  uint32_t PDE_page_frame = paddr_read((pdb << 12) + (tmp << 2), 4);
-  assert(PDE_page_frame & 0x1);
-
-  tmp = PTX(vaddr);
-  uint32_t PTE_page_frame = paddr_read((PDE_page_frame & 0xfffff000) + (tmp << 2), 4);
-  assert(PTE_page_frame & 0x1);
-
-  return (PTE_page_frame & 0xfffff000) + OFF(vaddr);
-}
+// void vaddr_write(vaddr_t addr, int len, uint32_t data) {
+//  if(cpu.cr0.protect_enable && cpu.cr0.paging) {
+// 	 if( CROSS_PAGE(addr, len)) {//cross page write
+// 		 assert(0);
+// 	 }
+// 	 else {
+// 		 paddr_t paddr = page_translate(addr);
+// 		 paddr_write(paddr, len, data);
+// 	 }
+//  }
+//  else paddr_write(addr, len, data);//else别漏
+// }
