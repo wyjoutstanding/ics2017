@@ -53,53 +53,7 @@ paddr_t page_translate(vaddr_t vaddr) {
 	paddr_t paddr = (pb.page_frame << 12) | (vaddr & 0xfff);
   // Log("va:0x%08x pa:0x%08x", vaddr, paddr);
 	return paddr;
-
-  // PDE pde, *pgdir;
-  // PTE pte, *pgtab;
-  // paddr_t paddr = addr;
-
-  // if (cpu.cr0.protect_enable && cpu.cr0.paging) {
-  //   pgdir = (PDE *)(intptr_t)(cpu.cr3.page_directory_base << 12);
-  //   pde.val = paddr_read((intptr_t)&pgdir[(addr >> 22) & 0x3ff], 4);
-  //   Assert(pde.present, "Page dir not valid: va 0x%x eip: 0x%x", addr, cpu.eip);
-  //   pde.accessed = 1;
-
-  //   pgtab = (PTE *)(intptr_t)(pde.page_frame << 12);
-  //   pte.val = paddr_read((intptr_t)&pgtab[(addr >> 12) & 0x3ff], 4);
-  //   Assert(pte.present, "Page dir not valid: va 0x%x", addr);
-  //   pte.accessed = 1;
-  //   pte.dirty = pte.read_write ? 1 : pte.dirty;
-  //   // Log("va:0x%08x pa:0x%08x",addr, paddr);
-   
-  //   paddr = (pte.page_frame << 12) | (addr & PAGE_MASK);
-	// // Log("va:0x%08x pa:0x%08x",addr, paddr);
-  // }
-
-  // return paddr;
 }
-
-// paddr_t page_translate(vaddr_t addr, bool is_write) {
-//   PDE pde, *pgdir;
-//   PTE pte, *pgtab;
-//   paddr_t paddr = addr;
-
-//   if (cpu.cr0.protect_enable && cpu.cr0.paging) {
-//     pgdir = (PDE *)(intptr_t)(cpu.cr3.page_directory_base << 12);
-//     pde.val = paddr_read((intptr_t)&pgdir[(addr >> 22) & 0x3ff], 4);
-//     Assert(pde.present, "Page dir not valid: va 0x%x eip: 0x%x", addr, cpu.eip);
-//     pde.accessed = 1;
-
-//     pgtab = (PTE *)(intptr_t)(pde.page_frame << 12);
-//     pte.val = paddr_read((intptr_t)&pgtab[(addr >> 12) & 0x3ff], 4);
-//     Assert(pte.present, "Page dir not valid: va 0x%x", addr);
-//     pte.accessed = 1;
-//     pte.dirty = is_write ? 1 : pte.dirty;
-
-//     paddr = (pte.page_frame << 12) | (addr & PAGE_MASK);
-//   }
-
-//   return paddr;
-// }
 
 uint32_t paddr_read(paddr_t addr, int len) {
   int mmio_id = is_mmio(addr);
@@ -113,6 +67,8 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 	else	memcpy(guest_to_host(addr), &data, len);
 }
 
+//判断是否跨页：
+//一个页大小为4096B（12位表示），所以仅需判断虚拟地址的高20位即可
  #define CROSS_PAGE(addr, len) \
    ((((addr) + (len) - 1) & ~PAGE_MASK) != ((addr) & ~PAGE_MASK))
 // uint32_t vaddr_read(vaddr_t addr, int len) {
@@ -153,19 +109,21 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 //   }
 // }
 uint32_t vaddr_read(vaddr_t addr, int len) {
+	Log("len:%d",len);
 	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		if( CROSS_PAGE(addr, len)) {//cross page read 
-			// assert(0);
-      paddr_t paddr;
-      union {
-      uint8_t bytes[4];
-      uint32_t dword;
-    } data = {0};
-    for (int i = 0; i < len; i++) {
-      paddr = page_translate(addr + i);
-      data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
-    }
-    return data.dword;
+		// 	// assert(0);
+		paddr_t paddr;
+		union {
+			uint8_t bytes[4];
+			uint32_t dword;
+		} data = {0};
+		for (int i = 0; i < len; i++) {
+			paddr = page_translate(addr + i);
+			data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
+		}
+		return data.dword;
+    
 		}
 		else {
 			paddr_t paddr = page_translate(addr);
