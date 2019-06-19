@@ -111,20 +111,23 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 uint32_t vaddr_read(vaddr_t addr, int len) {
 	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		if( CROSS_PAGE(addr, len)) {//cross page read 
-		Log("len:%d",len);
-		paddr_t paddr;
+		// Log("len:%d",len);
 		union {
 			uint8_t bytes[4];
 			uint32_t dword;
-		} data = {0};
-		for (int i = 0; i < len; i++) {
+		}readData = {0};
+
+		paddr_t paddr;
+		/*
+			依次将len个字节读入bytes数组中，返回其共用体，等于小端解释
+		 */
+		for(int i = 0; i < len; i++){
 			paddr = page_translate(addr + i);
-			data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
-			Log("i:%d bytes:%x", i, data.bytes[i]);
+		    readData.bytes[i] = (uint8_t)paddr_read(paddr, 1);
 		}
-		Log("dword:%x",data.dword);
-		assert(0);
-		return data.dword;
+		// Log("dword:%x",data.dword);
+		// assert(0);
+		return readData.dword;
     
 		}
 		else {
