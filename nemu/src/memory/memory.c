@@ -109,10 +109,10 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 //   }
 // }
 uint32_t vaddr_read(vaddr_t addr, int len) {
-	Log("len:%d",len);
 	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		if( CROSS_PAGE(addr, len)) {//cross page read 
-		// 	// assert(0);
+		Log("len:%d",len);
+		assert(0);
 		paddr_t paddr;
 		union {
 			uint8_t bytes[4];
