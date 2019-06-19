@@ -112,7 +112,6 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		if( CROSS_PAGE(addr, len)) {//cross page read 
 		Log("len:%d",len);
-		assert(0);
 		paddr_t paddr;
 		union {
 			uint8_t bytes[4];
@@ -121,7 +120,10 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 		for (int i = 0; i < len; i++) {
 			paddr = page_translate(addr + i);
 			data.bytes[i] = (uint8_t)paddr_read(paddr, 1);
+			Log("i:%d bytes:%x", i, data.bytes[i]);
 		}
+		Log("dword:%x",data.dword);
+		assert(0);
 		return data.dword;
     
 		}
