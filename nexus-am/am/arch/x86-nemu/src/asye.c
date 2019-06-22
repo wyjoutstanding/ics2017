@@ -50,6 +50,7 @@ _RegSet *_make(_Area stack, void *entry, void *arg) {
 }
 
 void _trap() {
+  vectrap();
 }
 
 int _istatus(int enable) {
