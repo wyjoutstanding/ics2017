@@ -52,7 +52,7 @@ void _protect(_Protect *p) {
   // map kernel space
   for (int i = 0; i < NR_PDE; i ++) {
     updir[i] = kpdirs[i];
-		printf("kpdirs:%x\n",kpdirs[i]);
+//		printf("kpdirs:%x\n",kpdirs[i]);
   }
 
   p->area.start = (void*)0x8000000;
