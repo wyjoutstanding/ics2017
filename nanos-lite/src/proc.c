@@ -4,7 +4,9 @@
 
 static PCB pcb[MAX_NR_PROC];
 static int nr_proc = 0;
-PCB *current = NULL;
+//指针不能NULL
+PCB pcb_tmp;
+PCB *current = &pcb_tmp;
 
 uintptr_t loader(_Protect *as, const char *filename);
 
@@ -27,5 +29,8 @@ void load_prog(const char *filename) {
 }
 
 _RegSet* schedule(_RegSet *prev) {
-  return NULL;
+  current->tf = prev;//保存上一个
+  current = &pcb[0];//切换到当前
+  _switch(&current->as);//虚拟地址切换，CR3页目录首地址
+  return current->tf;//返回即将要切换的上下文
 }
