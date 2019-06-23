@@ -8,6 +8,8 @@ static int nr_proc = 0;
 PCB pcb_tmp;
 PCB *current = &pcb_tmp;
 
+int num_proc = 0;
+
 uintptr_t loader(_Protect *as, const char *filename);
 
 void load_prog(const char *filename) {
@@ -30,7 +32,15 @@ void load_prog(const char *filename) {
 
 _RegSet* schedule(_RegSet *prev) {
   current->tf = prev;//保存上一个
-  current = &pcb[0];//切换到当前
+  // current = &pcb[0];//切换到当前
+  if(nr_proc / 200 == 0){
+    current = &pcb[0];
+    nr_proc ++;
+  }
+  else {
+    current = &pcb[1];
+    nr_proc = 0;
+  }
   _switch(&current->as);//虚拟地址切换，CR3页目录首地址
   return current->tf;//返回即将要切换的上下文
 }
