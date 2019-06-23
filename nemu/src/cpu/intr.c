@@ -8,7 +8,8 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 
 //  TODO();
 		uint32_t base,jmp,jmp_low,jmp_high;
-	  rtl_push((rtlreg_t*)&cpu.EFLAGS);
+	    rtl_push((rtlreg_t*)&cpu.EFLAGS);
+		cpu.EFLAGS.IF = 0;//关中断状态开启
 		rtl_push((rtlreg_t*)&cpu.CS);
 		rtl_push((rtlreg_t*)&ret_addr);//next eip
 		//取值
@@ -24,4 +25,5 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 }
 
 void dev_raise_intr() {
+	cpu.INTR = true;//引脚置为高电平
 }
